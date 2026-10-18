@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Free GCSE Maths Grade Check | MathsTutors.Online</title>
+<meta name="description" content="What grade would your child get if they sat GCSE Maths today? A free 5-minute check: no pen, paper or calculator. Get their grade and what's holding them back.">
+<link rel="canonical" href="https://gradecheck.mathstutors.online/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gradecheck.mathstutors.online/">
+<meta property="og:title" content="What grade would your child get in GCSE Maths today?">
+<meta property="og:description" content="A free 5-minute GCSE Maths grade check from MathsTutors.Online. No pen, paper or calculator.">
+<meta name="theme-color" content="#041F60">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: navy brand bar + one focused card at a time (intro → question → results), same tokens as the main site and offer page.
+   Deliberately single-theme: MT.O's light brand look on every device. */
+:root {
+  color-scheme: light;
+  --navy: #041F60;
+  --navy-deep: #031849;
+  --cyan: #4DE4FF;
+  --cyan-dim: #3BB5D9;
+  --plum: #5B5299;
+  --plum-tint: #EFEDFB;
+  --body: #4A5578;
+  --panel: #F6F7FC;
+  --line: #E1E4F1;
+  --white: #FFFFFF;
+  --muted: #8A92AE;
+  --good: #1D7A52;
+  --good-tint: #E6F4EC;
+  --warn: #9A6A08;
+  --warn-tint: #FBF1DC;
+  --gap: #B23A26;
+  --gap-tint: #FBE9E5;
+  --font-display: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --shell: 720px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--panel); color: var(--body);
+  font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { font-family: var(--font-display); color: var(--navy); line-height: 1.25; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+button { font: inherit; }
+.shell { width: min(100% - 2rem, var(--shell)); margin-inline: auto; }
+:where(a, button, input, select):focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+
+/* ---------- navbar ---------- */
+#navbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: var(--navy); border-bottom: 1px solid rgba(255,255,255,.1);
+}
+#navbar .shell { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .75rem; }
+.wordmark { font-family: var(--font-display); font-size: 1.05rem; font-weight: 800; color: var(--white); white-space: nowrap; }
+.wordmark .soft { font-weight: 500; color: var(--cyan); }
+.nav-tag { font-size: .8rem; font-weight: 600; color: #A9B8DC; letter-spacing: .06em; text-transform: uppercase; }
+.progress { height: 4px; background: rgba(255,255,255,.12); }
+.progress span { display: block; height: 100%; width: 0; background: var(--cyan); transition: width .4s ease; }
+
+/* ---------- intro ---------- */
+.hero { background: var(--navy); color: #C3CEE9; padding-block: clamp(2rem, 6vw, 3.5rem) clamp(2.5rem, 7vw, 4rem); }
+.hero .eyebrow { color: var(--cyan); }
+.hero h1 { color: var(--white); font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 800; letter-spacing: -.4px; margin-top: .6rem; }
+.hero .lede { font-size: clamp(1.05rem, 2.2vw, 1.2rem); margin-top: 1rem; max-width: 52ch; }
+.facts { list-style: none; padding: 0; margin: 1.6rem 0 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.toast { position: fixed; left: 50%; top: 4.2rem; z-index: 50; transform: translate(-50%, -12px); opacity: 0; pointer-events: none;
+  display: flex; align-items: center; gap: .7rem; width: max-content; max-width: calc(100vw - 32px);
+  background: var(--navy); color: var(--white); border: 2px solid var(--cyan); border-radius: 14px; padding: .7rem 1rem;
+  box-shadow: 0 10px 30px rgba(4,31,96,.25); transition: opacity .25s ease, transform .25s ease; cursor: pointer; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.toast .t-emoji { font-size: 1.4rem; line-height: 1; }
+.toast b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 1rem; }
+.toast span.t-sub { display: block; font-size: .88rem; color: #C3CEE9; }
+.hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; margin-top: 1.6rem; }
+.hero-cta .small { color: #C3CEE9; font-size: .9rem; }
+.proof { list-style: none; padding: 0; margin: 1.8rem 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem;
+  border-top: 1px solid rgba(255,255,255,.14); padding-top: 1.3rem; max-width: 46rem; }
+.proof li { display: flex; flex-direction: column; gap: .15rem; }
+.proof b { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.3rem, 3.4vw, 1.65rem); color: var(--white); line-height: 1.1; }
+.proof b .star { color: var(--cyan); font-size: .8em; margin-right: .15rem; }
+.proof b .unit { font-size: .6em; font-weight: 700; margin-left: .15rem; }
+.proof li > span { font-size: .82rem; color: #C3CEE9; }
+@media (max-width: 600px) { .proof { grid-template-columns: repeat(2, 1fr); row-gap: 1rem; } }
+.facts li { font-size: .88rem; font-weight: 600; color: var(--navy); background: var(--cyan); border-radius: 999px; padding: .3rem .85rem; }
+
+.eyebrow { font-family: var(--font-display); font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--plum); }
+
+.intro-body { padding-block: 2rem 3rem; display: grid; gap: 1.25rem; }
+.card { background: var(--white); border: 1px solid var(--line); border-radius: 14px; padding: clamp(1.25rem, 4vw, 2rem); }
+.card h2 { font-size: 1.3rem; }
+.steps-how { list-style: none; counter-reset: s; padding: 0; margin: 1rem 0 0; display: grid; gap: .9rem; }
+.steps-how li { counter-increment: s; display: grid; grid-template-columns: 2rem 1fr; gap: .8rem; align-items: start; }
+.steps-how li::before {
+  content: counter(s); display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--plum-tint); color: var(--plum); font-family: var(--font-display); font-weight: 700; font-size: .9rem;
+}
+.steps-how strong { color: var(--navy); font-weight: 600; }
+.honesty { background: var(--plum-tint); border-radius: 10px; padding: .9rem 1.1rem; font-size: .95rem; color: var(--navy); margin-top: 1.2rem; }
+
+.field { display: grid; gap: .5rem; margin-top: 1rem; }
+.field label { font-weight: 600; color: var(--navy); }
+.years { display: flex; flex-wrap: wrap; gap: .5rem; }
+.years button {
+  border: 2px solid var(--line); background: var(--white); color: var(--navy); font-weight: 600;
+  border-radius: 8px; padding: .55rem .9rem; cursor: pointer; min-width: 4.4rem;
+}
+.years button[aria-pressed="true"] { border-color: var(--navy); background: var(--navy); color: var(--white); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  font-family: var(--font-display); font-weight: 700; font-size: 1rem;
+  background: var(--navy); color: var(--white); border: 0; border-radius: 8px;
+  padding: .85rem 1.5rem; cursor: pointer; transition: background .15s ease, opacity .15s ease;
+}
+.btn:hover { background: var(--navy-deep); }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn--cyan { background: var(--cyan); color: var(--navy); }
+.btn--cyan:hover { background: var(--cyan-dim); }
+.linkbtn { background: none; border: 0; color: var(--body); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: .6rem .4rem; font-size: .95rem; }
+.linkbtn:hover { color: var(--navy); }
+.start-row { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 1.4rem; }
+.start-row .small { font-size: .88rem; color: var(--muted); }
+
+/* ---------- question ---------- */
+.stage { padding-block: 1.5rem 3rem; }
+.qmeta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; align-items: baseline; margin-bottom: .8rem; }
+.qmeta .hint { font-size: .85rem; color: var(--muted); }
+.prompt { font-family: var(--font-display); font-size: clamp(1.3rem, 3.6vw, 1.65rem); font-weight: 700; color: var(--navy); line-height: 1.35; text-wrap: balance; }
+.prompt .m { font-family: var(--font-display); white-space: nowrap; }
+.fr { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.05; margin: 0 .15em; font-size: .9em; }
+.fr > span:first-child { border-bottom: 2px solid currentColor; padding: 0 .2em .05em; }
+.fr > span:last-child { padding: .05em .2em 0; }
+.diagram { margin: 1.1rem 0 0; display: flex; justify-content: center; }
+.diagram svg { width: 100%; max-width: 320px; height: auto; }
+.dtable { border-collapse: collapse; margin: 1rem 0 0; font-variant-numeric: tabular-nums; }
+.dtable th, .dtable td { border: 1px solid var(--line); padding: .45rem .9rem; text-align: center; }
+.dtable th { background: var(--panel); color: var(--navy); font-weight: 600; font-size: .92rem; }
+
+.answer { margin-top: 1.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
+.answer.stack { flex-direction: column; align-items: stretch; }
+.answer .row { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.affix { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; color: var(--navy); }
+.answer input {
+  font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: var(--navy);
+  border: 2px solid var(--line); border-radius: 8px; padding: .55rem .75rem; width: 8rem; max-width: 100%;
+  background: var(--white); transition: border-color .15s ease;
+}
+.answer input.wide { width: min(22rem, 100%); font-size: 1.15rem; }
+.answer input:focus { border-color: var(--navy); outline: none; box-shadow: 0 0 0 3px rgba(77,228,255,.6); }
+.answer input:disabled { background: var(--panel); color: var(--body); }
+.fracin { display: inline-flex; flex-direction: column; align-items: center; gap: .3rem; }
+.fracin input { width: 5.5rem; text-align: center; }
+.fracin .bar { width: 6rem; height: 3px; background: var(--navy); border-radius: 2px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; margin-top: 1.5rem; }
+.note { margin-top: .9rem; font-size: .95rem; color: var(--plum); min-height: 1.4em; }
+
+.breakdown-banner { display: flex; align-items: center; gap: .6rem; background: var(--plum-tint); color: var(--navy); border-radius: 10px; padding: .7rem 1rem; font-weight: 600; margin-bottom: 1rem; }
+.breakdown-banner .count { margin-left: auto; font-size: .82rem; font-weight: 600; color: var(--plum); white-space: nowrap; }
+.orig { font-size: .95rem; color: var(--body); border-left: 3px solid var(--line); padding-left: .8rem; margin-bottom: 1rem; }
+.orig .diagram svg { max-width: 200px; }
+.stepfb { margin-top: .9rem; font-weight: 600; min-height: 1.5em; }
+.stepfb.ok { color: var(--good); }
+.stepfb.no { color: var(--plum); }
+
+/* ---------- feedback ---------- */
+.verdict { display: flex; align-items: center; gap: .7rem; }
+.verdict .dot { width: 2.2rem; height: 2.2rem; border-radius: 50%; display: grid; place-items: center; flex: none; font-weight: 800; font-family: var(--font-display); }
+.verdict.good .dot { background: var(--good-tint); color: var(--good); }
+.verdict.mid .dot { background: var(--warn-tint); color: var(--warn); }
+.verdict.low .dot { background: var(--panel); color: var(--body); border: 1px solid var(--line); }
+.verdict h2 { font-size: 1.3rem; }
+.ans-line { margin-top: 1rem; font-size: 1.05rem; color: var(--navy); }
+.ans-line strong { font-family: var(--font-display); }
+.tip { margin-top: 1rem; background: var(--navy); color: #D5DDF2; border-radius: 10px; padding: 1rem 1.1rem; }
+.tip .label { display: block; font-family: var(--font-display); font-size: .74rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--cyan); margin-bottom: .25rem; }
+.breakdown-banner > span:first-child { min-width: 0; }
+.breakdown-banner .why { font-weight: 400; }
+.verdict-note { margin-top: .6rem; color: var(--navy); }
+.probe { margin-top: 1.5rem; }
+.probe h3 { font-size: 1.05rem; }
+.probe p { font-size: .9rem; color: var(--muted); margin-top: .2rem; }
+.probe-opts { display: grid; gap: .5rem; margin-top: .8rem; }
+.probe-opts button {
+  text-align: left; border: 2px solid var(--line); background: var(--white); color: var(--navy);
+  border-radius: 8px; padding: .7rem .9rem; cursor: pointer; font-weight: 500;
+}
+.probe-opts button:hover { border-color: var(--cyan-dim); }
+.probe-opts button[aria-pressed="true"] { border-color: var(--navy); background: var(--plum-tint); font-weight: 600; }
+
+/* ---------- results ---------- */
+.result-hero { background: var(--navy); color: #C3CEE9; padding-block: 2.25rem 2.75rem; }
+.result-hero .eyebrow { color: var(--cyan); }
+.grade-row { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 2rem; margin-top: 1rem; }
+.grade-badge { display: grid; place-items: center; width: 8.5rem; height: 8.5rem; border-radius: 18px; border: 2px solid var(--cyan); flex: none; }
+.grade-badge .g { font-family: var(--font-display); font-weight: 800; font-size: 4.6rem; color: var(--cyan); line-height: 1; }
+.grade-badge .gl { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #A9B8DC; margin-top: -.6rem; }
+.grade-copy { flex: 1 1 18rem; min-width: 0; }
+.grade-copy h1 { color: var(--white); font-size: clamp(1.4rem, 3.8vw, 1.9rem); font-weight: 800; }
+.grade-copy p { margin-top: .6rem; max-width: 52ch; }
+.range-pill { display: inline-block; margin-top: .8rem; font-size: .9rem; font-weight: 600; color: var(--navy); background: var(--cyan); border-radius: 999px; padding: .25rem .8rem; }
+.result-body { padding-block: 2rem 3rem; display: grid; gap: 1.25rem; }
+.labels { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: .8rem; }
+.labels li { position: relative; padding: .9rem 1rem .9rem 2.6rem; background: var(--panel); border-radius: 10px; color: var(--navy); }
+.labels li::before { content: ""; position: absolute; left: 1rem; top: 1.35rem; width: 9px; height: 9px; border-radius: 50%; background: var(--plum); }
+.tier { margin-top: .6rem; }
+.tier strong { color: var(--navy); }
+.topics { display: grid; grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: .6rem; margin-top: 1rem; }
+.topic { border: 1px solid var(--line); border-radius: 10px; padding: .7rem .85rem; display: grid; gap: .35rem; }
+.topic .name { font-weight: 600; color: var(--navy); font-size: .95rem; }
+.chip { justify-self: start; font-size: .76rem; font-weight: 700; border-radius: 999px; padding: .15rem .6rem; }
+.chip.secure { background: var(--good-tint); color: var(--good); }
+.chip.patchy { background: var(--warn-tint); color: var(--warn); }
+.chip.gap { background: var(--gap-tint); color: var(--gap); }
+.chip.untested { background: var(--panel); color: var(--muted); }
+details.log summary { cursor: pointer; font-family: var(--font-display); font-weight: 700; color: var(--navy); font-size: 1.1rem; }
+.logwrap { overflow-x: auto; margin-top: 1rem; }
+.logtable { border-collapse: collapse; width: 100%; font-size: .9rem; font-variant-numeric: tabular-nums; min-width: 34rem; }
+.logtable th, .logtable td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.logtable th { color: var(--navy); font-weight: 600; font-size: .82rem; text-transform: uppercase; letter-spacing: .04em; }
+.disclaimer { font-size: .92rem; }
+.placeholder { border: 2px dashed var(--line); border-radius: 14px; padding: 1.25rem; color: var(--muted); font-size: .95rem; }
+.placeholder strong { color: var(--body); }
+
+/* grade scale */
+.gs { margin-top: 1.25rem; }
+.gs-track { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; }
+.gs-cell { height: 3rem; display: grid; place-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+  font-family: var(--font-display); font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+.gs-cell.range { background: var(--plum-tint); border-color: var(--plum-tint); color: var(--plum); }
+.gs-cell.now { background: var(--navy); border-color: var(--navy); color: var(--cyan); font-size: 1.25rem; box-shadow: 0 0 0 3px var(--cyan); }
+.gs-marks { position: relative; display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; margin-top: .5rem; min-height: 2.6rem; }
+.gs-mark { grid-column: var(--col); grid-row: 1; font-size: .74rem; line-height: 1.25; color: var(--body); text-align: center; border-top: 3px solid var(--good); padding-top: .3rem; }
+.gs-mark b { display: block; font-family: var(--font-display); color: var(--good); }
+.gs-key { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; margin-top: .8rem; font-size: .85rem; color: var(--muted); }
+.gs-key i { display: inline-block; width: .8rem; height: .8rem; border-radius: 3px; margin-right: .4rem; vertical-align: -1px; }
+.k-now { background: var(--navy); }
+.k-range { background: var(--plum-tint); border: 1px solid var(--plum); }
+.paper-pick { display: inline-block; margin-top: .9rem; font-family: var(--font-display); font-weight: 700; color: var(--navy); background: var(--plum-tint); border-radius: 8px; padding: .4rem .8rem; }
+.labels .evidence { display: block; margin-top: .35rem; font-size: .9rem; color: var(--plum); }
+.sample-note { margin-top: 1rem; font-size: .92rem; color: var(--muted); }
+.staff { border-style: dashed; }
+
+/* ---------- roadmap ---------- */
+.text-in { font: inherit; font-size: 1.05rem; color: var(--navy); border: 2px solid var(--line); border-radius: 8px; padding: .6rem .8rem; width: min(20rem, 100%); background: var(--white); }
+.text-in:focus { border-color: var(--navy); outline: none; box-shadow: 0 0 0 3px rgba(77,228,255,.6); }
+.rm-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: .6rem; }
+.rm-opt { text-align: left; display: grid; gap: .25rem; border: 2px solid var(--line); background: var(--white); border-radius: 10px; padding: .8rem 1rem; cursor: pointer; color: var(--navy); font: inherit; }
+.rm-opt[aria-pressed="true"] { border-color: var(--navy); background: var(--plum-tint); }
+.rm-opt:disabled { cursor: not-allowed; opacity: .6; }
+.rm-opt-t { font-family: var(--font-display); font-weight: 700; }
+.rm-opt-s { font-size: .9rem; }
+.rm-opt-s.ok { color: var(--good); }
+.rm-opt-s.no { color: var(--gap); }
+.rm-note { margin-top: .8rem; font-size: .95rem; color: var(--navy); background: var(--warn-tint); border-radius: 10px; padding: .8rem 1rem; }
+.rm-note .linkbtn { padding: 0; font-weight: 600; color: var(--navy); }
+.rm-title { color: var(--white); font-size: clamp(1.6rem, 4.5vw, 2.3rem); font-weight: 800; margin-top: .5rem; }
+.rm-lede { margin-top: .6rem; font-size: 1.08rem; }
+.rm-stats { list-style: none; padding: 0; margin: 1.2rem 0 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.rm-stats li { font-size: .9rem; color: #C3CEE9; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; padding: .3rem .85rem; }
+.rm-stats b { color: var(--white); font-weight: 600; }
+.rm-first { border: 2px solid var(--cyan); }
+.rm-table { margin-top: 1rem; display: grid; gap: .4rem; }
+.rm-row { display: grid; grid-template-columns: 7.5rem repeat(var(--n), minmax(0, 1fr)); gap: .4rem; }
+.rm-head > div { font-family: var(--font-display); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--white); background: var(--navy); border-radius: 6px; padding: .35rem .6rem; }
+.rm-wk { background: var(--plum-tint); border-radius: 8px; padding: .55rem .7rem; display: grid; align-content: center; }
+.rm-wk b { font-family: var(--font-display); color: var(--navy); font-size: .9rem; }
+.rm-wk span { font-size: .8rem; color: var(--body); font-variant-numeric: tabular-nums; }
+.rm-cell { min-width: 0; background: var(--panel); border-radius: 8px; border-left: 4px solid var(--tc, var(--line)); padding: .5rem .7rem; display: grid; gap: .15rem; align-content: start; }
+.rm-cell.brk, .rm-cell.empty { border-left-color: var(--line); color: var(--muted); font-style: italic; font-size: .9rem; align-content: center; }
+.rm-sl { display: none; font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-style: normal; }
+.rm-pill { justify-self: start; font-family: var(--font-display); font-size: .66rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border-radius: 999px; padding: .12rem .55rem; white-space: nowrap; }
+.rm-pill.test_and_learn { background: var(--plum); color: var(--white); }
+.rm-pill.learn { background: var(--cyan); color: var(--navy); }
+.rm-pill.recap_and_test { background: var(--navy); color: var(--white); }
+.rm-topic { font-weight: 600; color: var(--navy); font-size: .95rem; }
+.rm-sub { font-size: .85rem; color: var(--body); }
+.rm-legend { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: .55rem; }
+.rm-legend li { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .6rem; font-size: .95rem; }
+.rm-h3 { font-size: 1rem; margin-top: 1.4rem; }
+.rm-tier { margin-top: .8rem; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.rm-topics { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .5rem; }
+.rm-topics span { font-size: .88rem; font-weight: 600; color: var(--navy); background: var(--panel); border-radius: 6px; padding: .3rem .65rem; border-bottom: 3px solid var(--tc); }
+.rm-all summary { cursor: pointer; font-weight: 600; color: var(--navy); margin-top: .8rem; }
+.rm-papers { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1rem; }
+.rm-papers span { font-size: .82rem; font-weight: 600; color: var(--white); background: var(--navy); border-radius: 6px; padding: .3rem .6rem; font-variant-numeric: tabular-nums; }
+.rm-cta { background: var(--navy); border-color: var(--navy); }
+.rm-cta h2 { color: var(--white); }
+.rm-cta .tier { color: #C3CEE9; }
+.rm-cta .small, .rm-first .small { font-size: .88rem; color: var(--muted); }
+.rm-cta .linkbtn { color: #C3CEE9; }
+a.btn { text-decoration: none; }
+@media (max-width: 600px) {
+  .rm-row { grid-template-columns: 1fr; }
+  .rm-head { display: none; }
+  .rm-wk { display: flex; justify-content: space-between; align-items: baseline; }
+  .rm-sl { display: block; }
+}
+
+.test-panel { margin-top: 1.4rem; border: 2px dashed var(--line); border-radius: 10px; padding: .9rem 1rem; }
+.test-row { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-top: .5rem; }
+.test-row select { font: inherit; padding: .5rem .6rem; border: 2px solid var(--line); border-radius: 8px; color: var(--navy); background: var(--white); }
+.test-row .btn { padding: .6rem 1rem; font-size: .9rem; background: var(--plum); }
+
+.contact { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+.contact-h { font-family: var(--font-display); font-weight: 700; color: var(--navy); }
+.contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0 1rem; }
+.contact-grid .text-in { width: 100%; }
+.check { display: flex; gap: .55rem; align-items: flex-start; margin-top: .9rem; font-size: .95rem; color: var(--navy); cursor: pointer; }
+.check input { margin-top: .25rem; width: 1.05rem; height: 1.05rem; accent-color: var(--navy); }
+.field label .opt { font-weight: 400; color: var(--muted); }
+.contact-note { margin: -.2rem 0 .7rem; font-size: .92rem; color: var(--muted); }
+.privacy { margin-top: .6rem; font-size: .85rem; color: var(--muted); }
+.contact-err { margin-top: .5rem; font-weight: 600; color: var(--gap); min-height: 1.2em; }
+
+.footer { background: var(--navy-deep); color: #9FAFD4; padding-block: 1.5rem calc(1.5rem + env(safe-area-inset-bottom, 0px)); font-size: .88rem; }
+.footer .shell { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .8rem; align-items: center; }
+
+@keyframes rise { from { transform: translateY(6px); } to { transform: none; } }
+.screen-in { animation: rise .25s ease both; }
+</style>
+</head>
+<body>
+
+<header id="navbar">
+  <div class="shell">
+    <span class="wordmark">Maths<span class="soft">Tutors</span>.Online</span>
+    <span class="nav-tag">GCSE Grade Check</span>
+  </div>
+  <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+</header>
+
+<main id="app"></main>
+
+<footer class="footer">
+  <div class="shell">
+    <span class="wordmark">Maths<span class="soft">Tutors</span>.Online</span>
+    <span>hello@mathstutors.online</span>
+  </div>
+</footer>
+
+<!-- ==========================================================================
+     ENGINE: question bank, adaptive logic and grading. No page code in here,
+     so it can be tested on its own.
+     Levels: 0 = number skills (everyone does all of them)
+             3 = grade 2–3, 4 = grade 3–4, 5 = grade 4–6, 6 = grade 6–7,
+             7 = grade 7+, 8 = grade 8–9
+     isNew: true marks questions added to fill gaps, for Christian to check.
+     ========================================================================== -->
+<script id="engine">
+var GC = (function () {
+  function fr(a, b) { return '<span class="fr"><span>' + a + '</span><span>' + b + '</span></span>'; }
+  function m(s) { return '<span class="m">' + s + '</span>'; }
+  function has(re) { return function (v) { return re.test(String(v[0] || '').toLowerCase()) ? 'correct' : 'wrong'; }; }
+
+  var CIRCLE_SVG =
+    '<svg viewBox="0 0 300 250" role="img" aria-label="Circle with centre O. Lines from two points on the lower part of the circle meet at O, making 100 degrees, and meet at a point at the top of the circle, making the unknown angle.">' +
+    '<circle cx="150" cy="120" r="95" fill="none" stroke="var(--navy)" stroke-width="2.5"/>' +
+    '<path d="M77.2 181.1 L150 120 L222.8 181.1" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<path d="M77.2 181.1 L150 25 L222.8 181.1" fill="none" stroke="var(--plum)" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<path d="M134.7 132.9 A20 20 0 0 0 165.3 132.9" fill="none" stroke="var(--navy)" stroke-width="2"/>' +
+    '<path d="M141.8 52.2 A30 30 0 0 0 158.2 52.2" fill="none" stroke="var(--plum)" stroke-width="2"/>' +
+    '<circle cx="150" cy="120" r="3.5" fill="var(--navy)"/>' +
+    '<text x="150" y="110" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="15" fill="var(--navy)">O</text>' +
+    '<text x="150" y="160" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="15" fill="var(--navy)">100°</text>' +
+    '<text x="150" y="78" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="800" font-size="18" fill="var(--plum)">?</text>' +
+    '</svg>';
+
+  var TRIANGLE_SVG =
+    '<svg viewBox="0 0 300 230" role="img" aria-label="A triangle with two sides of 5 centimetres and 8 centimetres, with a 60 degree angle between them. The third side, opposite the angle, is labelled x.">' +
+    '<path d="M50 190 L250 190 L112.5 81.7 Z" fill="var(--panel)" stroke="var(--navy)" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<path d="M80 190 A30 30 0 0 0 65 164" fill="none" stroke="var(--navy)" stroke-width="2"/>' +
+    '<text x="150" y="214" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="15" fill="var(--navy)">8 cm</text>' +
+    '<text x="62" y="128" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="15" fill="var(--navy)">5 cm</text>' +
+    '<text x="200" y="125" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="800" font-size="18" fill="var(--plum)">x</text>' +
+    '<text x="96" y="182" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="13" fill="var(--navy)">60°</text>' +
+    '</svg>';
+
+  var TANGENT_SVG =
+    '<svg viewBox="0 0 300 225" role="img" aria-label="Circle with points A, B and C on it, joined to make a triangle. A straight line touches the circle at A. The angle between the line and chord AB is 65 degrees. The angle at C is unknown.">' +
+    '<circle cx="150" cy="110" r="80" fill="none" stroke="var(--navy)" stroke-width="2.5"/>' +
+    '<line x1="30" y1="190" x2="270" y2="190" stroke="var(--navy)" stroke-width="2.5"/>' +
+    '<path d="M150 190 L211.3 58.6 L74.8 82.6 Z" fill="none" stroke="var(--plum)" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<path d="M168 190 A18 18 0 0 0 157.6 173.7" fill="none" stroke="var(--navy)" stroke-width="2"/>' +
+    '<path d="M94.5 79.1 A20 20 0 0 1 86.3 99" fill="none" stroke="var(--plum)" stroke-width="2"/>' +
+    '<text x="184" y="169" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="14" fill="var(--navy)">65°</text>' +
+    '<text x="106" y="97" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="800" font-size="17" fill="var(--plum)">?</text>' +
+    '<text x="150" y="211" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="15" fill="var(--navy)">A</text>' +
+    '<text x="222" y="50" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="15" fill="var(--navy)">B</text>' +
+    '<text x="60" y="78" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="15" fill="var(--navy)">C</text>' +
+    '</svg>';
+
+  var YESNO_NO = has(/^\s*no\b|^\s*n\s*$/);
+
+  var ITEMS = [
+    /* ---------------- Number skills: everyone, in order ---------------- */
+    { id: 'n1', level: 0, topic: 'Number', prompt: 'What is ' + m('3 × 7') + '?', input: { type: 'num' }, answer: 21, display: '21',
+      steps: [{ q: 'What is ' + m('3 × 5') + '?', answer: 15 }, { q: 'What is ' + m('3 × 2') + '?', answer: 6 }, { q: 'So what is ' + m('15 + 6') + '?', answer: 21 }],
+      tip: 'Break harder times tables into ones you know: 3 × 7 is 3 × 5 plus 3 × 2.' },
+    { id: 'n2', level: 0, topic: 'Number', prompt: 'What is ' + m('7 × 8') + '?', input: { type: 'num' }, answer: 56, display: '56',
+      steps: [{ q: 'What is ' + m('7 × 2') + '?', answer: 14 }, { q: 'Now double it. What is ' + m('14 × 2') + '?', answer: 28 }, { q: 'Double it one more time. What is ' + m('28 × 2') + '?', answer: 56 }],
+      tip: 'You can times by 8 by doubling 3 times: 7 → 14 → 28 → 56.' },
+    { id: 'n3', level: 0, topic: 'Number', prompt: 'What is the square root of 81?', input: { type: 'num' }, answer: 9, display: '9',
+      steps: [{ q: 'What is ' + m('8 × 8') + '?', answer: 64 }, { q: 'What is ' + m('10 × 10') + '?', answer: 100 }, { q: 'So which whole number times itself makes 81?', answer: 9 }],
+      tip: 'A square root asks: what number times itself gives this?' },
+    { id: 'n4', level: 0, topic: 'Number', prompt: 'What is the cube root of 27?', input: { type: 'num' }, answer: 3, display: '3',
+      steps: [{ q: 'A cube root means a number × itself × itself. What is ' + m('2 × 2 × 2') + '?', answer: 8 }, { q: 'What is ' + m('4 × 4 × 4') + '?', answer: 64 }, { q: 'So which number, cubed, makes 27?', answer: 3 }],
+      tip: 'Cube root: which number × itself × itself gives this? 3 × 3 × 3 = 27.' },
+    { id: 'n5', level: 0, topic: 'Number', prompt: 'What is ' + fr(1, 2) + ' ÷ ' + fr(3, 5) + '?', input: { type: 'frac' }, answer: [5, 6], display: '5/6',
+      steps: [{ q: 'Keep the first fraction, flip the second, and change ÷ to ×. What is ' + fr(3, 5) + ' flipped upside down?', input: { type: 'frac' }, answer: [5, 3], display: '5/3' },
+              { q: 'So what is ' + fr(1, 2) + ' × ' + fr(5, 3) + '?', input: { type: 'frac' }, answer: [5, 6], display: '5/6' }],
+      tip: 'KFC: Keep the first fraction, Flip the second, Change ÷ to ×. Then multiply the tops together and the bottoms together.' },
+
+    /* ---------------- Grade 2–3 ---------------- */
+    { id: 'p1', level: 3, topic: 'Probability', prompt: 'What is the chance of rolling a 3 on a normal six-sided dice?', input: { type: 'frac' }, answer: [1, 6], display: '1/6',
+      steps: [{ q: 'How many sides does a dice have?', answer: 6 }, { q: 'How many of those sides show a 3?', answer: 1 }, { q: 'Probability = the number of ways it can happen ÷ the total number of outcomes. So what is the chance of rolling a 3?', input: { type: 'frac' }, answer: [1, 6], display: '1/6' }],
+      tip: 'Probability = the number of ways it can happen ÷ the total number of outcomes.' },
+    { id: 's1', level: 3, topic: 'Statistics', prompt: 'What is the mean of 2, 4 and 9?', input: { type: 'num' }, answer: 5, display: '5',
+      steps: [{ q: 'Add them up. What is ' + m('2 + 4 + 9') + '?', answer: 15 }, { q: 'How many numbers are there?', answer: 3 }, { q: 'So what is ' + m('15 ÷ 3') + '?', answer: 5 }],
+      tip: 'Mean: add them all up, then divide by how many there are.' },
+    { id: 'r0', level: 3, topic: 'Ratio', isNew: true, prompt: 'What is 25% of 80?', input: { type: 'num' }, answer: 20, display: '20',
+      steps: [{ q: 'What is 50% of 80?', answer: 40 }, { q: '25% is half of 50%. What is half of 40?', answer: 20 }],
+      tip: '25% is a quarter: halve it, then halve it again.' },
+
+    /* ---------------- Grade 3–4 ---------------- */
+    { id: 'r1', level: 4, topic: 'Ratio', prompt: 'There are 10 people in a room. 3 more people come in. What is the percentage increase?', input: { type: 'num', suffix: '%' }, answer: 30, display: '30%',
+      steps: [{ q: 'How many more people are there?', answer: 3 }, { q: 'What percentage of 10 is 1 person?', input: { type: 'num', suffix: '%' }, answer: 10, display: '10%' }, { q: 'So if 1 person is 10%, what percentage is 3 people?', input: { type: 'num', suffix: '%' }, answer: 30, display: '30%' }],
+      tip: 'Percentage change = change ÷ original × 100.' },
+    { id: 's2', level: 4, pri: 0, topic: 'Statistics', prompt: 'What is the median of 3, 8, 9, 1, 5?', input: { type: 'num' }, answer: 5, display: '5',
+      steps: [{ q: 'The median is the middle number once they’re in order. In order they are 1, 3, ?, 8, 9. What’s missing?', answer: 5 }],
+      tip: 'Always put the numbers in order first, then find the middle one.' },
+    { id: 'g1', level: 4, topic: 'Geometry', prompt: 'A circle has a radius of 3 cm. What is its area, in terms of π?', input: { type: 'num', suffix: 'π cm²' }, answer: 9, display: '9π cm²',
+      steps: [{ q: 'The area of a circle is π × r × r. What is ' + m('3 × 3') + '?', answer: 9 }],
+      tip: 'Area of a circle = πr². “In terms of π” means you leave the π in, so there’s no need to multiply by 3.14.' },
+    { id: 'g2', level: 4, topic: 'Geometry', prompt: 'You’re facing north. You turn clockwise until you’re facing east. What bearing are you now facing?', input: { type: 'text', placeholder: 'Type the bearing' },
+      check: function (v) {
+        var s = String(v[0] || '').replace(/[°\s]|degrees?/gi, '');
+        if (s === '090') return 'correct';
+        if (s === '90') return { partial: true, startStep: 2 };
+        return 'wrong';
+      }, display: '090°',
+      steps: [{ q: 'How many degrees are there in a full turn?', answer: 360 }, { q: 'North to east is a quarter turn. How many degrees is that?', answer: 90 },
+              { q: 'Bearings are always written with 3 figures. How do you write 90 as a bearing?', input: { type: 'text', placeholder: 'Type the bearing' }, check: function (v) { return String(v[0] || '').replace(/[°\s]|degrees?/gi, '') === '090' ? 'correct' : 'wrong'; }, display: '090' }],
+      tip: 'Bearings are measured clockwise from north and always have 3 figures: 090, not 90.' },
+
+    /* ---------------- Grade 4–6 ---------------- */
+    { id: 'a1', level: 5, topic: 'Algebra', prompt: 'What is the equation of a straight line?', input: { type: 'text', placeholder: 'Type the equation' },
+      check: function (v) {
+        var t = String(v[0] || '').replace(/\s+/g, '').toLowerCase();
+        if (t === 'y=mx+c') return 'correct';
+        if (/^180(°|degrees?|deg)?$/.test(t)) return { steps: true };
+        return 'wrong';
+      }, display: 'y = mx + c',
+      stepsOnSignal: true, stepsNoCredit: true,
+      steps: [{ q: 'What does an equation always need to have in it?', input: { type: 'text', placeholder: 'Type your answer' }, check: has(/=|equal/), display: 'an equals sign (=)' },
+              { q: 'Does 180° have an = in it? Type yes or no.', input: { type: 'text', placeholder: 'yes or no' }, check: YESNO_NO, display: 'no' },
+              { q: 'So can 180° be the equation of a straight line? Type yes or no.', input: { type: 'text', placeholder: 'yes or no' }, check: YESNO_NO, display: 'no. 180° is the angles on a straight line, not its equation' }],
+      tip: 'y = mx + c: m is the gradient, c is where it crosses the y-axis.' },
+    { id: 'r2', level: 5, topic: 'Ratio', prompt: 'You put £1,000 in the bank at 10% compound interest. How much interest will you have earned after 2 years?', input: { type: 'num', prefix: '£' }, answer: 210, display: '£210',
+      steps: [{ q: 'What is 10% of £1,000?', input: { type: 'num', prefix: '£' }, answer: 100, display: '£100' }, { q: 'So how much is in the account after year 1?', input: { type: 'num', prefix: '£' }, answer: 1100, display: '£1,100' },
+              { q: 'What is 10% of £1,100?', input: { type: 'num', prefix: '£' }, answer: 110, display: '£110' }, { q: 'So how much interest have you earned altogether over the 2 years?', input: { type: 'num', prefix: '£' }, answer: 210, display: '£210' }],
+      tip: 'Compound interest: each year’s interest earns interest too. On a calculator, £1,000 × 1.1² gives the total, then take away the £1,000 you started with to get the interest.' },
+    { id: 'g3', level: 5, topic: 'Geometry', prompt: 'A prism has a cross-section with an area of 12 cm² and a length of 5 cm. What is its volume?', input: { type: 'num', suffix: 'cm³' }, answer: 60, display: '60 cm³',
+      steps: [{ q: 'A prism has the same cross-section all the way through, like a Toblerone box. Volume = cross-section area × length. What is ' + m('12 × 5') + '?', input: { type: 'num', suffix: 'cm³' }, answer: 60, display: '60 cm³' }],
+      tip: 'Prism volume = area of the cross-section × length.' },
+    { id: 'p2', level: 5, topic: 'Probability', prompt: 'You roll two dice and add the scores together. What is the chance the total is 3?', input: { type: 'frac' }, answer: [1, 18], display: '2/36 = 1/18',
+      steps: [{ q: 'How many possible outcomes are there when you roll two dice?', answer: 36 }, { q: 'How many pairs add up to 3?', answer: 2 }, { q: 'So what is the chance the total is 3?', input: { type: 'frac' }, answer: [2, 36], display: '2/36' }],
+      tip: 'Two dice: 6 × 6 = 36 outcomes. Then list the pairs that work: 1 + 2 and 2 + 1.' },
+
+    /* ---------------- Grade 6–7 ---------------- */
+    { id: 'a2', level: 6, pri: 2, topic: 'Algebra', prompt: 'Line A is ' + m('y = 4x + 1') + '. Line B is parallel to line A. What is line B’s gradient?', input: { type: 'num' }, answer: 4, display: '4',
+      steps: [{ q: 'What is the gradient of line A?', answer: 4 }, { q: 'Parallel lines have the same gradient. So what is line B’s gradient?', answer: 4 }],
+      tip: 'Exam tip: whenever a question says “parallel” about straight lines, it’s telling you the m is the same for both.' },
+    { id: 's3', level: 6, pri: 0, topic: 'Statistics', prompt: 'Estimate the mean height from this table.',
+      extra: '<table class="dtable"><tr><th>Height, h (cm)</th><th>Frequency</th></tr><tr><td>0 &lt; h ≤ 10</td><td>1</td></tr><tr><td>10 &lt; h ≤ 20</td><td>1</td></tr></table>',
+      input: { type: 'num', suffix: 'cm' }, answer: 10, display: '10 cm',
+      steps: [{ q: 'What is the midpoint of the 0–10 group?', answer: 5 }, { q: 'What is the midpoint of the 10–20 group?', answer: 15 },
+              { q: 'Multiply each midpoint by its frequency and add them up. What do you get?', answer: 20 }, { q: 'Now divide by the total frequency, 2. What is the estimated mean?', input: { type: 'num', suffix: 'cm' }, answer: 10, display: '10 cm' }],
+      tip: 'Grouped mean: midpoint × frequency for each group, add them up, then divide by the total frequency.' },
+    { id: 's4', level: 6, topic: 'Statistics', prompt: 'In a histogram, what does the area of each bar tell you?', input: { type: 'text', placeholder: 'Type your answer' },
+      check: function (v) { var s = String(v[0] || '').toLowerCase(); if (/density/.test(s)) return 'wrong'; return /freq|how many|number of|count|amount of/.test(s) ? 'correct' : 'wrong'; }, display: 'the frequency',
+      steps: [],
+      tip: 'Bar charts: the height shows the frequency. Histograms: the area shows the frequency.' },
+
+    { id: 'w1', level: 6, topic: 'Problem solving', isNew: true, prompt: 'Sam is 3 years older than Priya. Their ages add up to 25. How old is Sam?', input: { type: 'num', suffix: 'years old' }, answer: 14, display: '14',
+      steps: [{ q: 'Call Priya’s age x. How old is Sam, in terms of x?', input: { type: 'text', placeholder: 'Type it using x' },
+                check: function (v) { var t = String(v[0] || '').replace(/\s+/g, '').toLowerCase(); return (t === 'x+3' || t === '3+x') ? 'correct' : 'wrong'; }, display: 'x + 3' },
+              { q: 'Their ages add up to 25, so ' + m('x + x + 3 = 25') + '. That means ' + m('2x') + ' = ?', answer: 22 },
+              { q: 'So how old is Priya?', input: { type: 'num', suffix: 'years old' }, answer: 11, display: '11' },
+              { q: 'And how old is Sam?', input: { type: 'num', suffix: 'years old' }, answer: 14, display: '14' }],
+      tip: 'Worded questions: give the unknown a letter, write what the words say as an equation, then solve it.' },
+
+    /* ---------------- Grade 7+ ---------------- */
+    { id: 'a3', level: 7, topic: 'Algebra', prompt: 'How do you find the turning point of a quadratic curve?', input: { type: 'text', placeholder: 'Type the method' },
+      check: has(/complet\w*\s*(the\s*)?squ|\bcts\b|different/), display: 'complete the square', steps: [],
+      tip: 'Exam tip: if a question mentions a turning point, complete the square. y = (x + a)² + b has its turning point at (−a, b).' },
+    { id: 'g4', level: 7, topic: 'Geometry', prompt: 'O is the centre of the circle. What is the size of the angle marked ?', diagram: CIRCLE_SVG,
+      input: { type: 'num', suffix: '°' }, answer: 50, display: '50°',
+      steps: [{ q: 'The angle at the centre is double the angle at the circumference. What is half of 100?', input: { type: 'num', suffix: '°' }, answer: 50, display: '50°' }],
+      tip: 'Circle theorem: the angle at the centre is twice the angle at the circumference, from the same arc.' },
+    { id: 't1', level: 7, topic: 'Trigonometry', prompt: 'Which rule would you use to find the length x?', diagram: TRIANGLE_SVG,
+      input: { type: 'text', placeholder: 'Type the rule' }, check: has(/cos/), display: 'the cosine rule',
+      steps: [{ q: 'Is this a right-angled triangle? Type yes or no.', input: { type: 'text', placeholder: 'yes or no' }, check: YESNO_NO, display: 'no, so not Pythagoras or SOHCAHTOA' },
+              { q: 'The sine rule needs an angle and the side opposite it. Do you know an angle and the side opposite it here? Type yes or no.', input: { type: 'text', placeholder: 'yes or no' }, check: YESNO_NO, display: 'no, so not the sine rule' },
+              { q: 'So which rule would you use?', input: { type: 'text', placeholder: 'Type the rule' }, check: has(/cos/), display: 'the cosine rule' }],
+      tip: 'Two sides and the angle between them, or all three sides: cosine rule. An angle and the side opposite it: sine rule.' },
+
+    /* ---------------- Grade 8 (and n6, the grade 9 check asked only after a perfect run) ---------------- */
+    { id: 'g5', level: 8, topic: 'Geometry', isNew: true, prompt: 'The straight line is a tangent to the circle at A. What is the size of the angle marked ?', diagram: TANGENT_SVG,
+      input: { type: 'num', suffix: '°' }, answer: 65, display: '65°',
+      steps: [{ q: 'Look at the 65° angle between the tangent and the triangle. Which side of the triangle does it sit next to: AB or AC?', input: { type: 'text', placeholder: 'AB or AC' }, check: has(/^\s*(ab|ba)\s*$/), display: 'AB' },
+              { q: 'The alternate segment theorem says the angle between a tangent and a side of the triangle equals the angle in the corner opposite that side. Which corner is opposite AB: A, B or C?', input: { type: 'text', placeholder: 'A, B or C' }, check: has(/^\s*c\s*$/), display: 'C' },
+              { q: 'So what is the angle at C?', input: { type: 'num', suffix: '°' }, answer: 65, display: '65°' }],
+      tip: 'Alternate segment theorem: the angle between a tangent and a chord equals the angle in the alternate segment. See a tangent touching a triangle in a circle? Check this one first.' },
+    { id: 'r3', level: 8, topic: 'Ratio', prompt: 'Cube B’s sides are twice as long as cube A’s. How many times bigger is cube B’s volume?', input: { type: 'num' }, answer: 8, display: '8 times',
+      steps: [{ q: 'Say cube A is 2 cm × 2 cm × 2 cm. What is its volume?', input: { type: 'num', suffix: 'cm³' }, answer: 8, display: '8 cm³' }, { q: 'Then cube B is 4 cm × 4 cm × 4 cm. What is its volume?', input: { type: 'num', suffix: 'cm³' }, answer: 64, display: '64 cm³' },
+              { q: 'So how many times bigger is cube B’s volume?', answer: 8 }],
+      tip: 'If lengths scale by k, areas scale by k² and volumes by k³. Double the length, 8 times the volume.' },
+    { id: 'v1', level: 8, topic: 'Vectors', prompt: 'The vectors ' + m('a + 2b') + ' and ' + m('3a + kb') + ' are parallel. What is k?', input: { type: 'num' }, answer: 6, display: '6',
+      steps: [{ q: 'Parallel vectors are multiples of each other. What do you multiply ' + m('a') + ' by to get ' + m('3a') + '?', answer: 3 }, { q: 'Multiply ' + m('2b') + ' by the same number. What is k?', answer: 6 }],
+      tip: 'To show two vectors are parallel, show one is an exact multiple of the other.' },
+    { id: 'n6', level: 9, topic: 'Number', isNew: true, prompt: 'What is ' + m('(') + fr(8, 27) + m(')<sup>−2/3</sup>') + '?', input: { type: 'frac' }, answer: [9, 4], display: '9/4',
+      steps: [{ q: 'A negative power means flip the fraction. What is ' + fr(8, 27) + ' flipped?', input: { type: 'frac' }, answer: [27, 8], display: '27/8' },
+              { q: 'The bottom of the power means a root. What is the cube root of ' + fr(27, 8) + '?', input: { type: 'frac' }, answer: [3, 2], display: '3/2' },
+              { q: 'The top of the power means “to the power of”. What is ' + m('(') + fr(3, 2) + m(')²') + '?', input: { type: 'frac' }, answer: [9, 4], display: '9/4' }],
+      tip: 'Negative fractional powers in three moves: the minus flips the fraction, the bottom number is the root, the top number is the power.' }
+  ];
+
+  /* Per-question settings. quick = seconds within which a correct answer counts as quick.
+     name = how the question is referred to in the result evidence. */
+  var META = {
+    n1: { quick: 6,  name: '3 × 7' },            n2: { quick: 6,  name: '7 × 8' },
+    n3: { quick: 6,  name: '√81' },              n4: { quick: 8,  name: '∛27' },
+    n5: { quick: 25, name: '½ ÷ ⅗' },
+    p1: { quick: 12, name: 'basic probability' }, s1: { quick: 15, name: 'finding the mean' },
+    r0: { quick: 12, name: '25% of 80' },
+    r1: { quick: 20, name: 'percentage increase' }, s2: { quick: 15, name: 'finding the median' },
+    g1: { quick: 10, name: 'area of a circle' },  g2: { quick: 15, name: 'bearings' },
+    a1: { quick: 15, name: 'y = mx + c' },         r2: { quick: 30, name: 'compound interest' },
+    g3: { quick: 15, name: 'volume of a prism' }, p2: { quick: 30, name: 'two-dice probability' },
+    a2: { quick: 15, name: 'parallel lines' },     s3: { quick: 20, name: 'the grouped mean' },
+    s4: { quick: 15, name: 'histograms' },        w1: { quick: 40, name: 'the ages problem' },
+    a3: { quick: 15, name: 'turning points' },     g4: { quick: 20, name: 'the circle theorem' },
+    t1: { quick: 20, name: 'the cosine rule' },
+    g5: { quick: 25, name: 'the alternate segment theorem' }, r3: { quick: 20, name: 'scaling volumes' },
+    v1: { quick: 15, name: 'parallel vectors' },   n6: { quick: 30, name: 'negative fractional powers' }
+  };
+  ITEMS.forEach(function (it) { var mm = META[it.id] || {}; it.quick = mm.quick || 15; it.name = mm.name || it.topic.toLowerCase(); });
+
+  /* ---------------- answer checking ---------------- */
+  function parseNum(v) {
+    var s = String(v == null ? '' : v).trim().toLowerCase()
+      .replace(/[−–—]/g, '-').replace(/cm³|cm²|cm|pi|times|x$/g, '').replace(/[£,%°π\s]/g, '');
+    if (s === '' || !/^-?\d*\.?\d+$/.test(s)) return NaN;
+    return Number(s);
+  }
+  function same(a, b) { return Math.abs(a - b) < 1e-9; }
+  function check(def, values) {
+    if (def.check) return def.check(values);
+    var inp = def.input || { type: 'num' };
+    if (inp.type === 'frac') {
+      var n = parseNum(values[0]), d = parseNum(values[1]);
+      if (isNaN(n) || isNaN(d) || d === 0) return 'wrong';
+      return same(n * def.answer[1], def.answer[0] * d) ? 'correct' : 'wrong';
+    }
+    if (inp.type === 'pair') {
+      for (var i = 0; i < def.answer.length; i++) if (!same(parseNum(values[i]), def.answer[i])) return 'wrong';
+      return 'correct';
+    }
+    return same(parseNum(values[0]), def.answer) ? 'correct' : 'wrong';
+  }
+
+  /* ---------------- adaptive engine ---------------- */
+  var MAX_Q = 18;
+  var START_ORDER = ['n1', 'n2', 'n3', 'n4', 'n5'];
+  var MUST_ASK = ['a1', 'w1'];   // always asked; if the check would end without reaching it, it's asked last
+
+  function create(year) {
+    var s = { year: year, log: [], asked: {}, forced: {}, stats: {}, level: null, lastFast: false, dropMode: false, done: false, top: false };
+    function stat(L) { return s.stats[L] || (s.stats[L] = { ok: 0, fail: 0, n: 0 }); }
+    function byId(id) { for (var i = 0; i < ITEMS.length; i++) if (ITEMS[i].id === id) return ITEMS[i]; }
+    function pickAt(L) {
+      var pool = ITEMS.filter(function (it) { return it.level === L && !s.asked[it.id]; });
+      if (!pool.length) return null;
+      var last = s.log.length ? s.log[s.log.length - 1].topic : null;
+      var asked = {};
+      s.log.forEach(function (e) { asked[e.topic] = (asked[e.topic] || 0) + 1; });
+      function pri(it) { return it.pri == null ? 1 : it.pri; }   // 2 = ask first, 1 = normal, 0 = only if needed
+      var top = Math.max.apply(null, pool.map(pri));
+      pool = pool.filter(function (it) { return pri(it) === top; });
+      pool.sort(function (a, b) { return (asked[a.topic] || 0) - (asked[b.topic] || 0); });
+      for (var i = 0; i < pool.length; i++) if (pool[i].topic !== last) return pool[i];
+      return pool[0];
+    }
+    function numAvg() {
+      var xs = s.log.filter(function (e) { return e.level === 0; });
+      return xs.length ? xs.reduce(function (t, e) { return t + e.score; }, 0) / xs.length : 0;
+    }
+    function finish() {
+      for (var i = 0; i < MUST_ASK.length; i++) if (!s.asked[MUST_ASK[i]]) { s.forced[MUST_ASK[i]] = true; return byId(MUST_ASK[i]); }
+      return null;
+    }
+    function next() {
+      if (s.done) return finish();
+      for (var i = 0; i < START_ORDER.length; i++) if (!s.asked[START_ORDER[i]]) return byId(START_ORDER[i]);
+      if (s.level === null) {
+        var avg = numAvg();
+        var allFast = s.log.filter(function (e) { return e.level === 0; }).every(function (e) { return e.kind === 'fast'; });
+        s.level = allFast ? 5 : avg >= 0.75 ? 4 : 3;
+      }
+      if (s.log.length >= MAX_Q && s.level !== 9) { s.done = true; return finish(); }
+      var it = pickAt(s.level);
+      if (!it) { s.done = true; return finish(); }
+      return it;
+    }
+    function record(item, outcome) {
+      var e = { id: item.id, topic: item.topic, level: item.level, score: outcome.score, kind: outcome.kind,
+                time: outcome.time, probe: outcome.probe || null, given: outcome.given || '', isNew: !!item.isNew,
+                firstTry: outcome.firstTry || 'direct', firstTime: outcome.firstTime == null ? outcome.time : outcome.firstTime, away: outcome.away || 0, mistake: outcome.mistake || null };
+      s.log.push(e); s.asked[item.id] = true;
+      if (item.level === 0) return;
+      if (s.forced[item.id]) { e.forced = true; return; }   // asked outside the adaptive path: logged, but doesn't move the level
+      var L = item.level, st = stat(L), ok = outcome.score >= 0.8;
+      if (L === 9) { s.done = true; s.top = ok && outcome.kind === 'fast'; return; }   // the extra grade 9 question decides the 9
+      st.n++;
+      if (ok) {
+        st.ok++;
+        if (s.dropMode) { s.done = true; return; }          // found the line after dropping back
+        if (L === 8) {
+          if (st.ok >= 2 || !pickAt(8)) {
+            s.top = st.fail === 0;
+            var flawless = s.log.every(function (e) { return e.kind === 'fast'; });
+            if (s.top && flawless && pickAt(9)) { s.level = 9; s.top = false; }   // perfect so far: one grade 9 question to confirm it
+            else s.done = true;
+          }
+          s.lastFast = outcome.kind === 'fast';
+          return;
+        }
+        var inc = (outcome.kind === 'fast' && s.lastFast) ? 2 : 1;   // two quick, clean answers in a row: skip a level
+        s.level = Math.min(8, L + inc);
+        s.lastFast = outcome.kind === 'fast';
+      } else {
+        st.fail++;
+        s.lastFast = false;
+        var limitHere = st.fail >= 2 || (!pickAt(L) && st.ok === 0);
+        if (limitHere) {
+          var below = L - 1;
+          if (below >= 3 && stat(below).n === 0) { s.dropMode = true; s.level = below; }   // skipped too far: come back down
+          else s.done = true;
+        } else if (!pickAt(L)) {
+          if (st.ok >= 1 && L < 8) s.level = L + 1; else s.done = true;
+        }
+        // otherwise: one more question at the same level, from another topic
+      }
+    }
+
+    function result() {
+      var log = s.log;
+      var num = log.filter(function (e) { return e.level === 0; });
+      var avg = numAvg();
+      var numberBase = avg < 0.35 ? 1 : avg < 0.6 ? 2 : avg < 0.85 ? 3 : 4;
+
+      var secure = 0;
+      for (var L = 3; L <= 8; L++) {
+        var st = s.stats[L];
+        if (st && st.ok >= 1 && st.ok >= st.fail) secure = L;
+      }
+      var g;
+      if (secure) {
+        g = secure;                                    // level 3 → grade 3 … level 8 → grade 8
+        var atSecure = log.filter(function (e) { return e.level === secure; });
+        if (atSecure.length && atSecure.every(function (e) { return e.kind === 'fast'; })) g += 0.2;
+        var above = log.filter(function (e) { return e.level === secure + 1; });
+        if (above.some(function (e) { return e.score >= 0.25; })) g += 0.25;
+        if (secure === 8 && s.stats[8].ok >= 2) g = 8.8;
+      } else {
+        var low = log.filter(function (e) { return e.level === 3 || e.level === 4; });
+        g = low.some(function (e) { return e.score >= 0.25; }) ? 2.6 : 2;
+      }
+      if (numberBase < 4) g = Math.min(g, numberBase + (secure >= 3 ? 1 : 0) + 0.4);
+      else g = Math.max(g, 3);
+      g = Math.max(1, Math.min(9, g));
+
+      // Always quote the bottom of the range. A 9 is only given for a perfect run: every answer right, first time, quickly.
+      var perfect = s.top && log.length > 0 && log.every(function (e) { return e.kind === 'fast'; });
+      var lo = Math.max(1, Math.min(8, Math.floor(g))), hi = lo + 1;
+      var point = lo;
+      if (perfect) { point = 9; lo = 9; hi = 9; }
+
+      /* ---------- labels ---------- */
+      var probes = { notTaught: 0, forgot: 0, wording: 0, stuck: 0, slip: 0 };
+      log.forEach(function (e) { if (e.probe && probes.hasOwnProperty(e.probe)) probes[e.probe]++; });
+      // Number skills, split by what actually happened:
+      //   miss    = couldn't get there even with the steps
+      //   slow    = correct on their own, but took a while
+      //   stalled = froze or said "I don't know", then got there with the steps
+      //   slip    = answered quickly but wrong, then got there with the steps
+      var numMiss = num.filter(function (e) { return e.score < 0.4; }).length;
+      var numSlow = num.filter(function (e) { return e.kind === 'slow'; }).length;
+      var numStalled = num.filter(function (e) { return (e.firstTry === 'time' || e.firstTry === 'idk') && e.score >= 0.4; }).length;
+      var numSlips = num.filter(function (e) { return e.firstTry === 'wrong' && e.firstTime <= 15 && e.score >= 0.4; }).length;
+      var slowCount = numSlow + numStalled;
+      var numHelped = num.filter(function (e) { return e.score < 0.8; }).length;   // needed the steps on 3+ = a foundations problem, not slips
+      var topicItems = log.filter(function (e) { return e.level > 0; });
+      var guided = topicItems.filter(function (e) { return e.score >= 0.4 && e.score < 0.8; }).length;
+      var failLevels = topicItems.filter(function (e) { return e.score < 0.8; }).map(function (e) { return e.level; });
+      var scattered = topicItems.some(function (a) { return a.score < 0.8 && topicItems.some(function (b) { return b.score >= 0.8 && b.level > a.level; }); });
+
+      var w = {
+        foundations: numMiss * 2 + (numHelped >= 3 ? numHelped : 0),
+        arithmetic: (numMiss === 0 && numHelped < 3 && slowCount >= 2) ? slowCount : 0,
+        careless: numHelped >= 3 ? 0 : numSlips ? numSlips * 1.5 + 1 + probes.slip * 0.5 : (probes.slip >= 2 ? probes.slip * 0.5 + 0.5 : 0),
+        forgot: probes.forgot,
+        behind: probes.notTaught + (probes.notTaught && scattered ? 1 : 0),
+        wording: probes.wording,
+        stuck: probes.stuck,
+        breakdown: guided >= 2 ? guided : 0,
+        problemSolving: (numberBase === 4 && secure >= 5 && failLevels.length && failLevels.every(function (l) { return l >= 6; })) ? 2 : 0,
+        confidence: (probes.forgot >= 1 && secure && secure <= 4 && numMiss === 0) ? 1 + probes.forgot * 0.5 : 0,
+        examTechnique: (probes.wording >= 1 && probes.stuck >= 1) ? 1.5 : 0,
+        strong: secure >= 7 ? 3 : 0
+      };
+      var keys = Object.keys(w).filter(function (k) { return w[k] >= 1; }).sort(function (a, b) { return w[b] - w[a]; });
+      if (keys.indexOf('strong') > -1 && keys.length > 1) keys.splice(keys.indexOf('strong'), 1);   // only lead with "strong" when nothing else shows
+      if (keys.indexOf('confidence') > -1 && keys.indexOf('forgot') > -1) keys.splice(keys.indexOf('forgot'), 1);
+      keys = keys.slice(0, 3);
+      if (!keys.length) keys = [point >= 7 ? 'strong' : 'problemSolving'];
+
+      /* ---------- topics ---------- */
+      var topics = ['Number', 'Algebra', 'Problem solving', 'Ratio', 'Geometry', 'Probability', 'Statistics', 'Trigonometry', 'Vectors'];
+      var topicStatus = topics.map(function (t) {
+        var xs = log.filter(function (e) { return e.topic === t; });
+        if (!xs.length) return { topic: t, status: 'untested' };
+        var a = xs.reduce(function (sum, e) { return sum + e.score; }, 0) / xs.length;
+        return { topic: t, status: a >= 0.8 ? 'secure' : a >= 0.4 ? 'patchy' : 'gap' };
+      });
+
+      /* ---------- evidence: what we actually saw, one short line per label ---------- */
+      function names(xs) {
+        var n = xs.slice(0, 3).map(function (e) { return byId(e.id).name; });
+        return n.length <= 1 ? (n[0] || '') : n.slice(0, -1).join(', ') + ' and ' + n[n.length - 1];
+      }
+      function sec(x) { return Math.round(x) + ' seconds'; }
+      function withProbe(id) { return topicItems.filter(function (e) { return e.probe === id; }); }
+      var evidence = {};
+      var slipItems = num.filter(function (e) { return e.firstTry === 'wrong' && e.firstTime <= 15 && e.score >= 0.4; });
+      if (slipItems.length) {
+        var sl = slipItems[0];
+        evidence.careless = 'They answered ' + byId(sl.id).name + ' in ' + (Math.round(sl.firstTime) <= 1 ? '1 second' : sec(sl.firstTime)) + ', got it wrong, then fixed it as soon as we broke it down' + (slipItems.length > 1 ? ', and did the same on ' + names(slipItems.slice(1)) : '') + '.';
+      } else if (probes.slip) evidence.careless = 'On ' + names(withProbe('slip')) + ' they knew the method, but the working went wrong.';
+      var helpedNum = num.filter(function (e) { return e.score < 0.8; });
+      if (helpedNum.length) evidence.foundations = 'They needed help with ' + names(helpedNum) + (helpedNum.length > 3 ? ', plus ' + (helpedNum.length - 3) + ' more of the 5 number questions' : '') + '.';
+      var slowNum = num.filter(function (e) { return e.kind === 'slow' || ((e.firstTry === 'time' || e.firstTry === 'idk') && e.score >= 0.4); });
+      if (slowNum.length) evidence.arithmetic = slowNum.length > 1
+        ? 'They got there on ' + names(slowNum) + ', but took ' + slowNum.slice(0, 3).map(function (e) { return Math.round(e.time); }).join(', ').replace(/, (\d+)$/, ' and $1') + ' seconds.'
+        : 'They got there on ' + names(slowNum) + ', but it took ' + sec(slowNum[0].time) + '.';
+      if (probes.forgot) evidence.forgot = 'They recognised ' + names(withProbe('forgot')) + ', but couldn’t remember the method.';
+      evidence.confidence = evidence.forgot;
+      if (probes.notTaught) evidence.behind = 'They don’t think they’ve been taught ' + names(withProbe('notTaught')) + ' yet.';
+      if (probes.wording) evidence.wording = 'On ' + names(withProbe('wording')) + ', they weren’t sure what the question was asking.';
+      if (probes.stuck) evidence.stuck = 'They started ' + names(withProbe('stuck')) + ', but got stuck part-way through.';
+      if (probes.wording || probes.stuck) evidence.examTechnique = 'On ' + names(withProbe('wording').concat(withProbe('stuck'))) + ', they couldn’t see where to start or where to go next.';
+      var guidedItems = topicItems.filter(function (e) { return e.score >= 0.4 && e.score < 0.8; });
+      if (guidedItems.length) evidence.breakdown = 'They got there on ' + names(guidedItems) + ' once we broke ' + (guidedItems.length > 1 ? 'them' : 'it') + ' into smaller steps.';
+      var hardFails = topicItems.filter(function (e) { return e.score < 0.8 && e.level >= 6; });
+      if (hardFails.length) evidence.problemSolving = 'Everything below grade 6 was solid. It was the harder questions, like ' + names(hardFails) + ', that caused trouble.';
+      var right = log.filter(function (e) { return e.score >= 0.8; });
+      evidence.strong = 'They got ' + right.length + ' of ' + log.length + ' questions right, including ' + names(right.filter(function (e) { return e.level >= 7; }).length ? right.filter(function (e) { return e.level >= 7; }) : right) + '.';
+
+      return { grade: point, lo: lo, hi: hi, perfect: perfect, evidence: evidence, raw: g, secure: secure, numberBase: numberBase, labels: keys,
+               tier: tierAdvice(point, s.year), topics: topicStatus, log: log, top: s.top };
+    }
+    return { next: next, record: record, result: result, state: s };
+  }
+
+  function tierAdvice(p, y) {
+    var CAP = 'Foundation only goes up to a grade 5, while Higher covers grades 4 to 9.';
+    if (y === 'resit') {
+      if (p >= 5) return { tier: 'Higher could be an option', why: 'Most resit students sit Foundation to lock in the grade 4 or 5 they need. ' + CAP + ' At this level, Higher is worth talking about.' };
+      return { tier: 'Foundation', why: 'For a resit, Foundation is the surest route to the grade 4 or 5 needed for college, apprenticeships and jobs. It only goes up to a 5, but that’s the grade that matters here.' };
+    }
+    var yr = Number(y);
+    if (p >= 7) return { tier: 'Higher', why: 'At this level, Higher is the only paper that lets them show what they can do. Foundation stops at a grade 5.' };
+    if (p >= 5) return { tier: 'Higher', why: CAP + ' At this level they should be sitting Higher to keep grades 6 to 9 open. It’s worth checking with school which paper they’re entered for.' };
+    if (p === 4) {
+      if (yr >= 11) return { tier: 'Foundation, unless they move up quickly', why: 'Students at a 4 in Year 11 are usually entered for the Foundation paper, which only goes up to a grade 5. To keep grades 6 and above open, they’d need to be at a solid 5 before their mocks, when schools usually decide.' };
+      if (yr === 10) return { tier: 'Higher is still realistic', why: CAP + ' With more than a year to go, there’s time to reach a solid 5 before schools decide, usually around Year 11 mocks, and keep the Higher paper open.' };
+      return { tier: 'Higher', why: CAP + ' With two years to go, there’s plenty of time to build on this and keep the Higher paper open.' };
+    }
+    if (yr >= 11) return { tier: 'Foundation', why: 'The Foundation paper covers grades 1 to 5, so a grade 4 pass is fully within reach on it. The priority between now and the exam is securing that pass.' };
+    if (yr === 10) return { tier: 'Foundation, for now', why: CAP + ' There’s still time to move up to Higher if they reach a solid 5 before schools decide, usually around Year 11 mocks.' };
+    return { tier: 'Too early to say', why: 'Schools usually decide in Year 11. ' + CAP + ' Getting the basics secure now is what keeps the Higher paper, and grades 6 to 9, open later.' };
+  }
+
+  var LABELS = {
+    foundations: 'Are struggling because of a few gaps in your foundational maths skills. Once the basics are nailed down, everything else gets easier.',
+    arithmetic: 'Spend so long on the arithmetic that you run out of time to even look at the harder questions.',
+    careless: 'Know how to do the basics, but make quick slips with times tables and arithmetic. Making these automatic will stop careless errors costing you marks under exam pressure.',
+    forgot: 'Recognise what you’re looking at but just can’t remember how to solve it. You need more guided practice, and methods that stay in your brain for next time.',
+    behind: 'Are a little behind from missing some of the content, and need to patch up the gaps so you feel confident in tests and exams.',
+    wording: 'Don’t always know what a question is asking, so it’s hard to know where to start.',
+    stuck: 'Can do the maths just fine, but don’t know where to start or get lost part-way through a question.',
+    breakdown: 'Are fine when a question is split into parts a, b, c and d, but find it hard to break a bigger, worded question into those steps yourself.',
+    problemSolving: 'Don’t have one topic you really struggle with, but need more support as the questions move into higher-level problem solving.',
+    confidence: 'Have lost some confidence in your maths over the past few years as the content has got a little harder.',
+    examTechnique: 'Are fine in class but find tests harder. You’re missing the exam technique to spot what a question is about, and what the first step should be.',
+    strong: 'Have a strong foundation right across the course. The next step is exam technique and the hardest problem-solving questions to lock in an 8 or a 9.'
+  };
+
+  var PROBES = [
+    { id: 'notTaught', text: 'I don’t think I’ve been taught this' },
+    { id: 'forgot', text: 'I recognise it, but couldn’t remember how' },
+    { id: 'wording', text: 'I didn’t understand what the question was asking' },
+    { id: 'stuck', text: 'I knew how to start, but got stuck' },
+    { id: 'slip', text: 'I knew the method, but the maths went wrong' }
+  ];
+
+  /* Common mistakes: a specific wrong answer → what it tells us.
+     Number = typed number. [top, bottom] = that exact fraction. /regex/ = typed text (lower case, spaces removed). */
+  var MISTAKES = {
+    n1: [[24, 'That’s 3 × 8, one step along in the 3 times table.'], [18, 'That’s 3 × 6, one step back in the 3 times table.']],
+    n2: [[54, 'That’s 6 × 9. 7 × 8 is one of the most commonly mixed-up times tables.'], [48, 'That’s 6 × 8, one step back in the 8 times table.'], [63, 'That’s 7 × 9, one step along in the 7 times table.'], [64, 'That’s 8 × 8.']],
+    n3: [[40.5, 'That’s half of 81. Halving and square rooting aren’t the same thing and are easy to mix up.']],
+    n4: [[9, 'That’s 27 divided by 3. Dividing by 3 and cube rooting aren’t the same thing and are easy to mix up.']],
+    n5: [[[3, 10], 'That’s multiplying straight across, which works for ×, but not for ÷.'], [[6, 5], 'Good, you flipped a fraction first! Just the wrong one.']],
+    p1: [[[3, 6], 'Not quite, but I can see why you’ve done that!']],
+    s1: [[15, 'That’s the total of the numbers, which is only the first part of finding the mean.'], [4, 'That’s the middle number, which is the median, not the mean.']],
+    r0: [[40, 'That’s 50% of 80, not 25%.']],
+    r1: [[3, 'That’s how many more people came in, not the percentage increase.'], [130, 'That’s the new total as a percentage of the original, rather than the increase.']],
+    s2: [[9, 'That’s the middle of the list before it’s been put in order.'], [5.2, 'That’s the mean, not the median.']],
+    g1: [[6, 'That’s 2 × 3, doubling the radius instead of squaring it. Doubling the radius is used for the circumference.'], [28.3, 'It looks like π has already been multiplied in, but it’s already there after the box.'], [28.26, 'It looks like π has already been multiplied in, but it’s already there after the box.'], [28.27, 'It looks like π has already been multiplied in, but it’s already there after the box.']],
+    g2: [[/^90(°|degrees?)?$/, 'Right direction! But bearings are always written with three figures.'], [/^270(°|degrees?)?$/, 'That’s measuring anticlockwise from north, rather than clockwise.']],
+    a1: [[/^180(°|degrees?|deg)?$/, '180° is linked to straight lines, as the angles on a straight line add up to 180°. But the question is asking for the equation of a straight line, which is something different.'],
+         [/^y=mx\+b$/, 'That’s the American way of writing it. The UK version uses a different letter for where it crosses the y-axis.']],
+    r2: [[200, 'That’s simple interest, where you earn the same amount every year.'], [1210, 'That’s the total in the account, not the interest earned.'], [1200, 'That’s the total with simple interest, where you earn the same amount every year.']],
+    p2: [[[1, 36], 'That only counts one way of rolling a total of 3.'], [[2, 12], 'That treats two dice as 12 possible outcomes, by adding their sides together.'], [[1, 6], 'That treats two dice as 12 possible outcomes, by adding their sides together.']],
+    w1: [[11, 'That’s Priya’s age, not Sam’s.'], [12.5, 'That’s half of 25, as if they were the same age.'], [11.5, 'That’s close, but the 3 years’ difference hasn’t been shared out quite right.']],
+    a2: [[-0.25, 'That’s the gradient of a perpendicular line, not a parallel one.'], [/^-1\/4$/, 'That’s the gradient of a perpendicular line, not a parallel one.'], [[-1, 4], 'That’s the gradient of a perpendicular line, not a parallel one.'], [1, 'That’s c, where the line crosses the y-axis, not the gradient.']],
+    s3: [[20, 'That’s the total of midpoint × frequency, which is only part of the way there.'], [7.5, 'That’s the middle of the two midpoints, without using the frequencies.']],
+    s4: [[/density/, 'Frequency density is shown by the height of the bar, not its area.'], [/height/, 'Height is how a bar chart shows frequency. Histograms work differently.']],
+    a3: [[/quadratic(formula)?|formula/, 'The quadratic formula finds where the curve crosses the x-axis, not its turning point.'], [/factori/, 'Factorising finds where the curve crosses the x-axis, not its turning point.']],
+    g4: [[200, 'That’s doubling the angle at the centre, which goes the wrong way round.'], [100, 'That’s the same as the angle at the centre, but the angle at the circumference is different.']],
+    t1: [[/^sin|sine/, 'The sine rule needs an angle and the side opposite it, which isn’t what this triangle gives you.'], [/pyth/, 'Pythagoras only works in right-angled triangles.'], [/soh|cah|toa/, 'SOHCAHTOA only works in right-angled triangles.']],
+    g5: [[115, 'That’s 180° − 65°, treating the angles as if they add up to 180°.'], [25, 'That’s 90° − 65°, treating the angles as if they add up to 90°.']],
+    r3: [[2, 'That’s the length scale factor. Volumes don’t scale the same way as lengths.'], [4, 'That’s the area scale factor. Volumes scale differently to areas.'], [6, 'That’s 2 × 3, rather than 2 cubed.']],
+    v1: [[3, 'That’s the number a is multiplied by, rather than k itself.']],
+    n6: [[[4, 9], 'That’s missing the effect of the negative sign in the power.'], [[-4, 9], 'A negative power doesn’t make the answer negative.'], [[3, 2], 'That’s the root, but the top of the power hasn’t been used yet.'], [[2, 3], 'That’s the cube root, but the negative and the top of the power haven’t been used yet.']]
+  };
+  function mistakeFor(def, values) {
+    var list = MISTAKES[def.id] || [];
+    var text = String(values[0] == null ? '' : values[0]).replace(/\s+/g, '').toLowerCase();
+    for (var i = 0; i < list.length; i++) {
+      var key = list[i][0];
+      if (key instanceof RegExp) { if (key.test(text)) return list[i][1]; }
+      else if (Array.isArray(key)) { if (same(parseNum(values[0]), key[0]) && same(parseNum(values[1]), key[1])) return list[i][1]; }
+      else if (same(parseNum(values[0]), key)) return list[i][1];
+    }
+    return null;
+  }
+
+  return { ITEMS: ITEMS, check: check, parseNum: parseNum, create: create, LABELS: LABELS, PROBES: PROBES, mistakeFor: mistakeFor };
+})();
+if (typeof module !== 'undefined') module.exports = GC;
+</script>
+
+<script id="roadmap-engine">
+/* ==========================================================================
+   ROADMAP ENGINE: a JavaScript port of the MT.O sales roadmap tool
+   (mto_sales_roadmap_tool.py + sales_scheduler.py + the shared
+   determine_curriculum_plan / exam_deadlines from mto_roadmap_tool.py).
+   Same rules: 8 topics per tier, 6 weeks per topic (Test & Learn, Learn x4,
+   Recap & Test), parallel tracks evenly spaced, Christmas (2 weeks) and
+   Easter (1 week) breaks, fortnightly maintenance papers after completion.
+   Sessions are labelled "Session 1/2" rather than weekdays, so every track
+   runs on the Monday of each week for date purposes.
+   ========================================================================== */
+var RM = (function () {
+  var N_TOPICS = 8, WEEKS_PER_TOPIC = 6, DAY = 864e5;
+  function D(y, m, d) { return new Date(Date.UTC(y, m - 1, d)); }
+  function add(d, n) { return new Date(d.getTime() + n * DAY); }
+  function wd(d) { return (d.getUTCDay() + 6) % 7; }            // Monday = 0
+  function iso(d) { return d.toISOString().slice(0, 10); }
+  function monday(d) { return add(d, -wd(d)); }
+
+  /* determine_curriculum_plan: which tiers, and how many full passes of each */
+  function curriculumPlan(cur, tgt) {
+    var jump = tgt - cur;
+    function runs(j) { return Math.max(1, Math.ceil(j / 2)); }
+    if (tgt <= 5) return [['foundation', runs(jump)]];
+    if (cur >= 5) return [['higher', runs(jump)]];
+    var f = Math.max(1, Math.ceil((5 - cur) / 2));
+    var total = Math.max(runs(jump), f + 1);
+    return [['foundation', f], ['higher', total - f]];
+  }
+
+  /* exam_deadlines: exam-ready by 31 March, maintenance to 30 April, of the real exam year */
+  function examDeadlines(today, schoolYear) {
+    var y = today.getUTCFullYear(), ays = (today.getUTCMonth() + 1 >= 9) ? y : y - 1;
+    var examYear = ays + (11 - schoolYear) + 1;
+    return { deadline: D(examYear, 3, 31), maintenanceEnd: D(examYear, 4, 30), examYear: examYear };
+  }
+
+  function easterSunday(year) {
+    var a = year % 19, b = Math.floor(year / 100), c = year % 100, d = Math.floor(b / 4), e = b % 4;
+    var f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+    var i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+    var month = Math.floor((h + l - 7 * m + 114) / 31), day = ((h + l - 7 * m + 114) % 31) + 1;
+    return D(year, month, day);
+  }
+  function breaksCovering(start, end) {
+    var out = [];
+    for (var y = start.getUTCFullYear() - 1; y <= end.getUTCFullYear(); y++) {
+      var d25 = D(y, 12, 25), cs = add(d25, -wd(d25));
+      out.push([cs, add(cs, 13)]);
+      var em = add(easterSunday(y), 1);
+      out.push([em, add(em, 6)]);
+    }
+    return out.filter(function (r) { return r[1] >= start && r[0] <= end; });
+  }
+  function inBreaks(d, breaks) { return breaks.some(function (r) { return r[0] <= d && d <= r[1]; }); }
+
+  function idealGaps(n) {
+    var base = Math.floor(N_TOPICS / n), rem = N_TOPICS % n, g = [];
+    for (var i = 0; i < n; i++) g.push(i < rem ? base + 1 : base);
+    return g;
+  }
+  function idealStarts(first, n) {
+    var gaps = idealGaps(n), idx = [first % N_TOPICS], cur = first;
+    for (var i = 0; i < gaps.length - 1; i++) { cur = (cur + gaps[i]) % N_TOPICS; idx.push(cur); }
+    return idx;
+  }
+  function weekMode(w) { return w === 1 ? 'test_and_learn' : w === WEEKS_PER_TOPIC ? 'recap_and_test' : 'learn'; }
+
+  function trackSchedule(startIdx, n, passes, planStart, breaks) {
+    var cursor = add(planStart, (0 - wd(planStart) + 7) % 7);      // first Monday on/after start
+    var visits = Math.ceil(passes * N_TOPICS / n), weeks = [], visit = 0, wit = 1, num = 0;
+    while (visit < visits && num < 500) {
+      num++;
+      if (inBreaks(cursor, breaks)) weeks.push({ date: cursor, isBreak: true, mode: 'break' });
+      else {
+        weeks.push({ date: cursor, isBreak: false, topic: (startIdx + visit) % N_TOPICS, weekInTopic: wit,
+                     mode: weekMode(wit), pass: Math.floor((startIdx + visit) / N_TOPICS) + 1 });
+        if (wit === WEEKS_PER_TOPIC) { wit = 1; visit++; } else wit++;
+      }
+      cursor = add(cursor, 7);
+    }
+    return weeks;
+  }
+
+  function fullPlan(n, starts, plan, planStart, breaks) {
+    var tracks = [], cursors = [];
+    for (var i = 0; i < n; i++) { tracks.push([]); cursors.push(planStart); }
+    plan.forEach(function (p, runIndex) {
+      var si = runIndex === 0 ? starts : idealStarts(0, n);
+      for (var t = 0; t < n; t++) {
+        var ws = trackSchedule(si[t], n, p[1], cursors[t], breaks);
+        ws.forEach(function (w) { w.tier = p[0]; });
+        tracks[t] = tracks[t].concat(ws);
+        if (ws.length) cursors[t] = add(ws[ws.length - 1].date, 7);
+      }
+    });
+    return tracks;
+  }
+
+  function mergeWeeks(tracks) {
+    var map = {};
+    tracks.forEach(function (ws, t) { ws.forEach(function (w) { var k = iso(monday(w.date)); (map[k] = map[k] || { monday: monday(w.date), cells: {} }).cells[t] = w; }); });
+    return Object.keys(map).sort().map(function (k, i) { map[k].week = i + 1; return map[k]; });
+  }
+  function endDate(tracks) {
+    var m = null;
+    tracks.forEach(function (ws) { ws.forEach(function (w) { if (!m || w.date > m) m = w.date; }); });
+    return m;
+  }
+
+  /* Build a roadmap. opts: { schoolYear, current, target, sessions, start } */
+  function build(opts) {
+    var ex = examDeadlines(opts.start, opts.schoolYear);
+    var breaks = breaksCovering(opts.start, add(ex.maintenanceEnd, 30));
+    var plan = curriculumPlan(opts.current, opts.target);
+    var tracks = fullPlan(opts.sessions, idealStarts(0, opts.sessions), plan, opts.start, breaks);
+    var end = endDate(tracks), maint = [];
+    for (var c = add(end, 14); c <= ex.maintenanceEnd; c = add(c, 14)) maint.push(c);
+    return { plan: plan, deadline: ex.deadline, maintenanceEnd: ex.maintenanceEnd, examYear: ex.examYear,
+             end: end, feasible: end <= ex.deadline, rows: mergeWeeks(tracks), maintenance: maint, sessions: opts.sessions };
+  }
+  function maxFeasibleGrade(opts) {
+    for (var g = opts.target - 1; g > opts.current; g--) {
+      if (build({ schoolYear: opts.schoolYear, current: opts.current, target: g, sessions: opts.sessions, start: opts.start }).feasible) return g;
+    }
+    return null;
+  }
+  /* The Monday after today: plans always start at the beginning of a week */
+  /* MT.O start weeks. A new "week 1" begins every 2nd TEACHING week, counted from START_ANCHOR
+     (w/c 12 Oct 2026 was a week 1). Christmas and Easter break weeks don't count, so the
+     cycle pauses over the holidays and carries on when sessions resume.
+     A parent can start in the current week if it's a week 1 and today is before Thursday. */
+  var START_ANCHOR = D(2026, 10, 12);
+  function startWeeks(until) {
+    var breaks = breaksCovering(START_ANCHOR, until), out = [], c = START_ANCHOR, teach = 0;
+    while (c <= until) {
+      if (!inBreaks(c, breaks)) { if (teach % 2 === 0) out.push(c); teach++; }
+      c = add(c, 7);
+    }
+    return out;
+  }
+  function nextStart(today) {
+    var t = D(today.getFullYear(), today.getMonth() + 1, today.getDate()), mon = monday(t);
+    if (mon < START_ANCHOR) return START_ANCHOR;
+    var weeks = startWeeks(add(mon, 120));
+    for (var i = 0; i < weeks.length; i++) {
+      if (weeks[i].getTime() === mon.getTime() && wd(t) < 3) return mon;   // Mon, Tue or Wed of a week 1
+      if (weeks[i] > mon) return weeks[i];
+    }
+    return add(mon, 7);
+  }
+
+  return { build: build, maxFeasibleGrade: maxFeasibleGrade, nextStart: nextStart, curriculumPlan: curriculumPlan,
+           iso: iso, add: add, D: D, N_TOPICS: N_TOPICS, WEEKS_PER_TOPIC: WEEKS_PER_TOPIC };
+})();
+
+/* MT.O sales curriculum (from curriculum_sales.json): n = topic name, c = colour, s = subtopics in order */
+var CURRICULUM = {"foundation": [{"n": "F. Algebra", "c": "#FFBA05", "s": ["Simplifying algebra", "Expanding & factorising", "Substitution", "Solving equations", "Forming & solving equations"]}, {"n": "F. Algebra 2", "c": "#D54401", "s": ["Plotting straight lines", "Equation of a straight line", "Other graphs", "Arithmetic sequences", "Other sequences"]}, {"n": "F. Number", "c": "#DC043B", "s": ["Place value & ordering numbers", "Standard form", "Factors & multiples", "Fraction operations", "Limits of accuracy"]}, {"n": "F. Ratio", "c": "#048A0E", "s": ["Writing ratios", "Sharing ratios & fractions", "Fractions & percentages", "Compound measures", "Proportion"]}, {"n": "F. Geometry", "c": "#39CAFF", "s": ["Circles", "Areas", "Surface area & volume", "SOHCAHTOA", "Angles & Pythagoras"]}, {"n": "F. Geometry 2", "c": "#01DDD5", "s": ["Vectors & translations", "Congruency", "Bearings", "Plans & elevations", "Angles in parallel lines"]}, {"n": "F. Probability", "c": "#BFAEFC", "s": ["Introduction to probability", "Tree diagrams", "Theoretical probability & relative frequency", "Two-way tables", "Mutually exclusive sum rule"]}, {"n": "F. Statistics", "c": "#6231AE", "s": ["Types of data", "Charts & diagrams", "Time series & scatter diagrams", "Sampling & population", "Histograms"]}], "higher": [{"n": "Linear Algebra", "c": "#FFBA05", "s": ["Algebraic manipulation", "Linear equations & inequalities", "Simultaneous equations", "Straight line graphs (equations of lines)", "Parallel & perpendicular straight lines"]}, {"n": "Quadratic Algebra", "c": "#D54401", "s": ["Expanding & factorising brackets", "Solving quadratic equations", "Quadratic inequalities & algebraic fractions", "Completing the square & quadratic formula", "Quadratic simultaneous equations"]}, {"n": "Number Algebra", "c": "#DC043B", "s": ["Recurring decimals", "Indices & surds", "Functions & inverse functions", "Transformations of functions", "Sequences & nth term (linear & quadratic)"]}, {"n": "Probability & Statistics", "c": "#7C37EF", "s": ["Probability basics", "Tree diagrams & dependent events", "Venn diagrams", "Mean, median, mode, range & box plots", "Cumulative frequency & histograms"]}, {"n": "Ratio", "c": "#048A0E", "s": ["Ratio basics", "Ratio part 2 & percentages", "Reverse percentages & compound interest", "Direct & inverse proportionality", "Proportionality in 1, 2 & 3 dimensions"]}, {"n": "Geometry", "c": "#39CAFF", "s": ["Lines & angles", "Bearings, interior & exterior angles", "Vector basics", "Vector proof", "Circle theorems"]}, {"n": "Geometry 2", "c": "#01DDD5", "s": ["Congruence", "Transformations & enlargements", "Plans, elevations & surface area", "Volume: prisms & cylinders", "Sectors, arc lengths, spheres & cones"]}, {"n": "Trigonometry", "c": "#166EE1", "s": ["SOHCAHTOA", "Exact values & graphs", "Pythagoras & sine rule", "Cosine rule & area of a triangle", "Identifying the trig approach"]}]};
+</script>
+
+<!-- ==========================================================================
+     PAGE: screens, timing and the question → steps → feedback flow
+     ========================================================================== -->
+<script>
+(function () {
+  var app = document.getElementById('app');
+  var bar = document.getElementById('bar');
+  var SHOW_STAFF = false;    // Set to true to show the testing panel and the question-by-question staff view again.
+  var HELP_AFTER = 30;        // seconds before help or stepping stones appear
+  var EST_TOTAL = 12;         // rough length for the progress bar
+  var year = null, engine = null, cur = null, qn = 0, timer = null, stepTimer = null;
+
+  function now() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
+  function el(html) { var d = document.createElement('div'); d.innerHTML = html.trim(); return d.firstChild; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function setBar(p) { bar.style.width = p + '%'; }
+  function show(node) { app.innerHTML = ''; node.classList.add('screen-in'); app.appendChild(node); window.scrollTo(0, 0); }
+  function clearTimers() { clearTimeout(timer); clearTimeout(stepTimer); }
+
+  /* The clock keeps running if they leave the page, so the time taken includes it.
+     We also note how long they were away, for the staff breakdown. */
+  function awayNow() { return cur ? cur.away + (cur.awayAt != null ? (now() - cur.awayAt) / 1000 : 0) : 0; }
+  document.addEventListener('visibilitychange', function () {
+    if (!cur) return;
+    if (document.hidden) { if (cur.awayAt == null) cur.awayAt = now(); }
+    else if (cur.awayAt != null) { cur.away += (now() - cur.awayAt) / 1000; cur.awayAt = null; }
+  });
+  window.addEventListener('blur', function () { if (cur && cur.awayAt == null) cur.awayAt = now(); });
+  window.addEventListener('focus', function () { if (cur && cur.awayAt != null) { cur.away += (now() - cur.awayAt) / 1000; cur.awayAt = null; } });
+
+  /* ---------------- intro ---------------- */
+  /* ---------------- social proof figures ----------------
+     Hard-coded to match the main website. Update here when the site's figures change. */
+  var FIG = { googleRating: 4.9, googleReviews: 160, studentsHelped: 1426, avgGradeJump: 3.3 };
+  function proofHtml() {
+    return '<ul class="proof" aria-label="MathsTutors.Online in numbers">' +
+      '<li><b><span class="star" aria-hidden="true">★</span>' + FIG.googleRating.toFixed(1) + '/5</b><span>Average Google rating</span></li>' +
+      '<li><b>' + FIG.googleReviews + '+</b><span>Google reviews</span></li>' +
+      '<li><b>' + FIG.studentsHelped.toLocaleString('en-GB') + '</b><span>Students taught</span></li>' +
+      '<li><b>+' + FIG.avgGradeJump.toFixed(1) + '<span class="unit">grades</span></b><span>Average grade jump</span></li>' +
+    '</ul>';
+  }
+  function intro() {
+    setBar(0);
+    var node = el(
+      '<div>' +
+      '<section class="hero"><div class="shell">' +
+        '<span class="eyebrow">Free GCSE Maths grade check</span>' +
+        '<h1>What grade would your child get if they sat GCSE Maths today?</h1>' +
+        '<p class="lede">No waiting for parents’ evening or a vague predicted grade. Get a clear picture of where they are right now, and what’s holding them back.</p>' +
+        '<ul class="facts"><li>5 minutes or less</li><li>No pen or paper</li><li>No calculator</li></ul>' +
+        '<div class="hero-cta"><button class="btn btn--cyan" id="startBtnTop" type="button">Start the grade check</button><span class="small">Free · your grade straight away</span></div>' +
+        proofHtml() +
+      '</div></section>' +
+      '<div class="shell intro-body">' +
+        '<section class="card">' +
+          '<h2>How it works</h2>' +
+          '<p style="margin-top:.4rem">It takes no more than 5 minutes to answer a few questions to find out your current GCSE Maths grade.</p>' +
+          '<ol class="steps-how">' +
+            '<li><span><strong>Your child answers on their own.</strong> You can read the questions aloud and type in exactly what they say, but nothing more.</span></li>' +
+            '<li><span><strong>It adapts as they go,</strong> getting harder until it finds the edge of what they know.</span></li>' +
+            '<li><span><strong>Stuck or wrong?</strong> It breaks the question into smaller steps, like a tutor would.</span></li>' +
+          '</ol>' +
+          '<p class="honesty">Let them work out every answer on their own, even when it’s hard. Typing in what they say is fine, but hints or help get you a grade that isn’t theirs, and advice that won’t fit.</p>' +
+          '<div class="start-row"><button class="btn" id="startBtn" type="button">Start the grade check</button></div>' +
+          (SHOW_STAFF ? '<div class="test-panel"><span class="eyebrow">Testing only · hidden at launch</span>' +
+            '<div class="test-row"><label for="t-year">Year</label><select id="t-year"><option value="9">Year 9</option><option value="10" selected>Year 10</option><option value="11">Year 11</option><option value="resit">Resitting</option></select>' +
+            '<button class="btn" type="button" id="t-g3">Skip to a grade 3 result</button><button class="btn" type="button" id="t-g6">Skip to a grade 6 result</button></div></div>' : '') +
+        '</section>' +
+      '</div></div>');
+    var start = node.querySelector('#startBtn'), startTop = node.querySelector('#startBtnTop');
+    if (SHOW_STAFF) {
+      node.querySelector('#t-g3').addEventListener('click', function () { testRun(3, node.querySelector('#t-year').value); });
+      node.querySelector('#t-g6').addEventListener('click', function () { testRun(6, node.querySelector('#t-year').value); });
+    }
+    function begin() { year = null; details = { name: '', target: null }; engine = GC.create(null); qn = 0; track('2. Started'); nextQuestion(); }
+    start.addEventListener('click', begin);
+    startTop.addEventListener('click', begin);
+    show(node);
+  }
+
+  /* ---------------- inputs ---------------- */
+  function buildInput(def, idBase) {
+    var inp = def.input || { type: 'num' };
+    var wrap, fields = [];
+    function field(cls, mode) {
+      var i = document.createElement('input');
+      i.type = 'text'; i.autocomplete = 'off'; i.spellcheck = false;
+      i.setAttribute('autocapitalize', 'off');
+      i.inputMode = mode || 'decimal';
+      i.id = idBase + '-' + fields.length;
+      if (cls) i.className = cls;
+      fields.push(i); return i;
+    }
+    if (inp.type === 'frac') {
+      wrap = el('<div class="answer"><div class="fracin"></div></div>');
+      var f = wrap.querySelector('.fracin');
+      var top = field('', 'numeric'); top.setAttribute('aria-label', 'Top of the fraction');
+      var bot = field('', 'numeric'); bot.setAttribute('aria-label', 'Bottom of the fraction');
+      f.appendChild(top); f.appendChild(el('<span class="bar"></span>')); f.appendChild(bot);
+    } else if (inp.type === 'pair') {
+      wrap = el('<div class="answer' + (inp.layout === 'stack' ? ' stack' : '') + '"></div>');
+      var host = wrap;
+      if (inp.layout !== 'stack') { host = el('<div class="row"></div>'); wrap.appendChild(host); }
+      inp.parts.forEach(function (p, i) {
+        var row = inp.layout === 'stack' ? el('<div class="row"></div>') : host;
+        if (p.pre) row.appendChild(el('<span class="affix">' + p.pre + '</span>'));
+        var x = field(); x.setAttribute('aria-label', (p.pre || 'Answer ' + (i + 1)).replace(/<[^>]+>/g, ''));
+        row.appendChild(x);
+        if (p.post) row.appendChild(el('<span class="affix">' + p.post + '</span>'));
+        if (inp.layout === 'stack') wrap.appendChild(row);
+      });
+    } else {
+      wrap = el('<div class="answer"><div class="row"></div></div>');
+      var r = wrap.querySelector('.row');
+      if (inp.prefix) r.appendChild(el('<span class="affix">' + inp.prefix + '</span>'));
+      var t = field(inp.type === 'text' ? 'wide' : '', inp.type === 'text' ? 'text' : 'decimal');
+      t.setAttribute('aria-label', 'Your answer');
+      if (inp.placeholder) t.placeholder = inp.placeholder;
+      r.appendChild(t);
+      if (inp.suffix) r.appendChild(el('<span class="affix">' + inp.suffix + '</span>'));
+    }
+    return {
+      node: wrap,
+      values: function () { return fields.map(function (f) { return f.value; }); },
+      empty: function () { return fields.some(function (f) { return f.value.trim() === ''; }); },
+      focus: function () { if (fields[0]) fields[0].focus(); },
+      disable: function () { fields.forEach(function (f) { f.disabled = true; }); },
+      onEnter: function (fn) {
+        fields.forEach(function (f, i) {
+          f.addEventListener('keydown', function (e) {
+            if (e.key !== 'Enter') return;
+            e.preventDefault();
+            if (i < fields.length - 1 && fields[i + 1].value.trim() === '') fields[i + 1].focus(); else fn();
+          });
+        });
+      }
+    };
+  }
+  function shownValue(def, vals) {
+    var t = (def.input || {}).type;
+    if (t === 'frac') return vals[0] + '/' + vals[1];
+    return vals.filter(function (v) { return v !== ''; }).join(', ');
+  }
+
+  /* ---------------- question ---------------- */
+  // Small pop-up at the halfway point. It doesn't take focus, and it appears on the answer screen
+  // after question 6, while the clock is stopped, so it never covers a question being timed.
+  var HALFWAY_Q = 6;   // most checks run to 12–14 questions
+  function toast(emoji, title, sub) {
+    var old = document.querySelector('.toast'); if (old) old.remove();
+    var t = el('<div class="toast" role="status" aria-live="polite"><span class="t-emoji" aria-hidden="true">' + emoji + '</span><div><b>' + title + '</b><span class="t-sub">' + sub + '</span></div></div>');
+    document.body.appendChild(t);
+    requestAnimationFrame(function () { requestAnimationFrame(function () { t.classList.add('show'); }); });
+    function hide() { t.classList.remove('show'); setTimeout(function () { t.remove(); }, 300); }
+    t.addEventListener('click', hide);
+    setTimeout(hide, 5000);
+  }
+
+  function nextQuestion() {
+    clearTimers();
+    var item = engine.next();
+    if (!item) return askDetails();
+    qn++;
+    visit.questions = qn - 1;
+    if (qn === 5) track('3. Reached question 5');
+    if (qn === 10) track('4. Reached question 10');
+    setBar(Math.min(94, (qn - 1) / EST_TOTAL * 100));
+    cur = { item: item, t0: now(), overtime: false, given: '', away: 0, awayAt: document.hidden ? now() : null };
+    renderMain();
+  }
+
+  function promptBlock(item, small) {
+    return '<p class="prompt"' + (small ? ' style="font-size:1.02rem"' : '') + '>' + item.prompt + '</p>' +
+      (item.diagram ? '<div class="diagram">' + item.diagram + '</div>' : '') +
+      (item.extra ? item.extra : '');
+  }
+
+  function hasSteps(item) { return !!(item.steps && item.steps.length && !item.stepsOnSignal); }
+
+  function renderMain() {
+    var item = cur.item;
+    var node = el('<div class="shell stage"><section class="card">' +
+      '<div class="qmeta"><span class="eyebrow">Question ' + qn + ' · ' + item.topic + '</span><span class="hint">Work it out in your head</span></div>' +
+      promptBlock(item) +
+      '<div class="ansHost"></div>' +
+      '<div class="actions"><button class="btn" type="button" id="checkBtn">Check answer</button><button class="linkbtn" type="button" id="idkBtn">I don’t know</button></div>' +
+      '<p class="note" aria-live="polite"></p>' +
+      '</section></div>');
+    var input = buildInput(item, 'q-' + item.id);
+    node.querySelector('.ansHost').appendChild(input.node);
+    var note = node.querySelector('.note');
+    function submit() {
+      if (input.empty()) { note.textContent = 'Type an answer first, or tap “I don’t know”.'; input.focus(); return; }
+      var vals = input.values(), t = (now() - cur.t0) / 1000, res = GC.check(item, vals);
+      clearTimers();
+      cur.given = shownValue(item, vals);
+      if (res !== 'correct') cur.mistake = GC.mistakeFor(item, vals);
+      if (res === 'correct') {
+        var kind = cur.overtime ? 'slow' : t <= item.quick ? 'fast' : 'slow';
+        var score = kind === 'fast' ? 1 : cur.overtime ? 0.6 : 0.8;
+        return feedback({ score: score, kind: kind, time: t });
+      }
+      if (res && res.partial) return startSteps(res.startStep, 'partial');
+      if (res && res.steps) return startSteps(0, 'wrong');
+      if (hasSteps(item)) return startSteps(0, 'wrong');
+      feedback({ score: 0, kind: 'miss', time: t });
+    }
+    input.onEnter(submit);
+    node.querySelector('#checkBtn').addEventListener('click', submit);
+    node.querySelector('#idkBtn').addEventListener('click', function () {
+      clearTimers(); cur.given = 'I don’t know';
+      if (hasSteps(item)) return startSteps(0, 'idk');
+      feedback({ score: 0, kind: 'miss', time: (now() - cur.t0) / 1000 });
+    });
+    timer = setTimeout(function () {
+      if (hasSteps(item)) { cur.given = '(ran out of time)'; startSteps(0, 'time'); }
+      else { cur.overtime = true; note.textContent = 'Take your time. If you’re not sure, tap “I don’t know”.'; }
+    }, HELP_AFTER * 1000);
+    show(node);
+    input.focus();
+  }
+
+  /* ---------------- stepping stones ---------------- */
+  var BANNERS = {
+    time: 'Let’s break this down together.',
+    wrong: 'Not quite. Let’s break it down.',
+    idk: 'No problem. Let’s break it down.',
+    partial: 'Nearly there. One last step.'
+  };
+  function startSteps(from, reason) {
+    cur.firstTime = (now() - cur.t0) / 1000;
+    cur.steps = { from: from, idx: from, reason: reason, right: 0, lastRight: false };
+    renderStep();
+  }
+  function renderStep() {
+    clearTimers();
+    var item = cur.item, st = cur.steps, step = item.steps[st.idx];
+    var total = item.steps.length - st.from, k = st.idx - st.from + 1;
+    var node = el('<div class="shell stage"><section class="card">' +
+      '<div class="breakdown-banner"><span>' + ((cur.mistake && k === 1)
+        ? (/^not quite/i.test(cur.mistake) ? '' : (st.reason === 'partial' ? 'Nearly there. ' : 'Not quite. ')) + '<span class="why">' + esc(cur.mistake) + '</span> ' + (st.reason === 'partial' ? 'One last step.' : 'Let’s break it down.')
+        : BANNERS[st.reason]) + '</span>' + (total > 1 ? '<span class="count">Step ' + k + ' of ' + total + '</span>' : '') + '</div>' +
+      '<div class="orig">' + promptBlock(item, true) + '</div>' +
+      '<p class="prompt">' + step.q + '</p>' +
+      '<div class="ansHost"></div>' +
+      '<div class="actions"><button class="btn" type="button" id="stepBtn">Check</button><button class="linkbtn" type="button" id="stepIdk">I don’t know</button></div>' +
+      '<p class="stepfb" aria-live="polite"></p>' +
+      '</section></div>');
+    var input = buildInput(step, 's-' + item.id + '-' + st.idx);
+    node.querySelector('.ansHost').appendChild(input.node);
+    var fb = node.querySelector('.stepfb'), btn = node.querySelector('#stepBtn'), idk = node.querySelector('#stepIdk');
+    var answered = false;
+    function done(vals) {
+      if (answered) return;
+      answered = true; clearTimers();
+      var right = !!vals && GC.check(step, vals) === 'correct';
+      if (right) st.right++;
+      st.lastRight = right;
+      input.disable(); btn.disabled = true; idk.disabled = true;
+      fb.className = 'stepfb ' + (right ? 'ok' : 'no');
+      fb.textContent = right ? '✓ Yes, that’s right.' : 'It’s ' + (step.display || step.answer) + '.';
+      setTimeout(function () {
+        if (st.idx < item.steps.length - 1) { st.idx++; renderStep(); }
+        else finishSteps();
+      }, right ? 900 : 1700);
+    }
+    function submit() {
+      if (input.empty()) { fb.className = 'stepfb no'; fb.textContent = 'Type an answer first, or tap “I don’t know”.'; input.focus(); return; }
+      done(input.values());
+    }
+    input.onEnter(submit);
+    btn.addEventListener('click', submit);
+    idk.addEventListener('click', function () { done(null); });
+    stepTimer = setTimeout(function () { done(null); }, HELP_AFTER * 1000);
+    show(node);
+    input.focus();
+  }
+  function finishSteps() {
+    var st = cur.steps, n = cur.item.steps.length - st.from, t = (now() - cur.t0) / 1000, score, kind;
+    if (cur.item.stepsNoCredit) { score = 0; kind = 'miss'; }
+    else if (st.reason === 'partial') { score = st.lastRight ? 0.6 : 0.3; kind = st.lastRight ? 'half' : 'partial'; }
+    else if (st.lastRight && st.right === n) { score = 0.5; kind = 'guided'; }
+    else if (st.lastRight) { score = 0.4; kind = 'guided'; }
+    else if (st.right > 0) { score = 0.25; kind = 'partial'; }
+    else { score = 0; kind = 'miss'; }
+    feedback({ score: score, kind: kind, time: t });
+  }
+
+  /* ---------------- feedback + "what got in the way" ---------------- */
+  function feedback(outcome) {
+    clearTimers();
+    var item = cur.item;
+    outcome.given = cur.given;
+    outcome.mistake = cur.mistake || null;
+    outcome.away = Math.round(awayNow());
+    outcome.firstTry = cur.steps ? cur.steps.reason : 'direct';
+    outcome.firstTime = cur.steps ? cur.firstTime : outcome.time;
+    var v = outcome.score >= 0.8 ? 'good' : outcome.score >= 0.4 ? 'mid' : 'low';
+    var title = outcome.kind === 'fast' ? 'Spot on, and quick.'
+      : outcome.score >= 0.8 ? 'Correct.'
+      : outcome.kind === 'half' ? 'Nearly there.'
+      : outcome.score >= 0.4 ? 'Got there with a bit of help.'
+      : outcome.score > 0 ? 'Part of the way there.' : 'Not this time.';
+    var mark = v === 'good' ? '✓' : v === 'mid' ? '~' : '–';
+    var needProbe = item.level > 0 && outcome.score < 0.8;
+    var node = el('<div class="shell stage"><section class="card">' +
+      '<div class="verdict ' + v + '"><span class="dot" aria-hidden="true">' + mark + '</span><h2>' + title + '</h2></div>' +
+      ((outcome.mistake && !cur.steps) ? '<p class="verdict-note">' + esc(outcome.mistake) + '</p>' : '') +
+      '<p class="ans-line">Answer: <strong>' + esc(item.display) + '</strong></p>' +
+      '<p class="tip"><span class="label">Quick win</span>' + esc(item.tip) + '</p>' +
+      (needProbe ? '<div class="probe"><h3>What got in the way most?</h3><p>Pick the one that fits best. This helps us work out what to fix.</p><div class="probe-opts" role="group" aria-label="What got in the way"></div></div>' : '') +
+      '<div class="actions"><button class="btn" type="button" id="nextBtn"' + (needProbe ? ' disabled' : '') + '>Next question</button></div>' +
+      '</section></div>');
+    var nextBtn = node.querySelector('#nextBtn');
+    if (needProbe) {
+      var opts = node.querySelector('.probe-opts');
+      GC.PROBES.forEach(function (p) {
+        var b = el('<button type="button" id="pr-' + p.id + '" aria-pressed="false">' + esc(p.text) + '</button>');
+        b.addEventListener('click', function () {
+          opts.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+          b.setAttribute('aria-pressed', 'true');
+          outcome.probe = p.id;
+          nextBtn.disabled = false;
+          nextBtn.focus();
+        });
+        opts.appendChild(b);
+      });
+    }
+    nextBtn.addEventListener('click', function () { engine.record(item, outcome); nextQuestion(); });
+    show(node);
+    if (!needProbe) nextBtn.focus();
+    // Shown on the answer screen (clock stopped) rather than over the next question.
+    if (qn === HALFWAY_Q) toast('🙌', 'You’re halfway there!', 'Great work so far. Keep going, just a few more to go.');
+  }
+
+  /* ---------------- next-grade copy (written per grade, not from their answers) ---------------- */
+  function gradeScale(r) {
+    var cells = '';
+    for (var g = 1; g <= 9; g++) {
+      var cls = g === r.grade ? ' now' : (g >= r.lo && g <= r.hi) ? ' range' : '';
+      cells += '<div class="gs-cell' + cls + '"><span>' + g + '</span></div>';
+    }
+    // Markers show the next grade that matters to this family, so they never sit uselessly below the result.
+    var marks = r.perfect ? []
+      : r.grade <= 4 ? [[4, 'Standard pass'], [5, 'Strong pass']]
+      : r.grade <= 6 ? [[7, 'A-level Maths']]
+      : [[7, 'A-level Maths'], [9, 'Top grade']];
+    var aria = 'Grade scale from 1 to 9. Estimated grade ' + r.grade + '.' + marks.map(function (mk) { return ' Grade ' + mk[0] + ': ' + mk[1] + '.'; }).join('');
+    return '<div class="gs" role="img" aria-label="' + aria + '">' +
+      '<div class="gs-track">' + cells + '</div>' +
+      (marks.length ? '<div class="gs-marks">' + marks.map(function (mk) { return '<span class="gs-mark" style="--col:' + mk[0] + '"><b>' + mk[0] + '</b> ' + mk[1] + '</span>'; }).join('') + '</div>' : '') +
+      '<div class="gs-key"><span><i class="k-now"></i>Grade today</span><span><i class="k-range"></i>Likely range</span></div>' +
+    '</div>';
+  }
+
+  function scaleCopy(r) {
+    if (r.perfect) return 'That’s the top grade. Now we aim for full marks!';
+    if (r.grade === 8) return 'That’s 1 grade below the top grade, and above what many sixth forms ask for to study A-level Maths.';
+    if (r.grade === 7) return 'That’s the grade many sixth forms ask for to study A-level Maths. The next question is how close to a 9 they can get.';
+    if (r.grade >= 5) { var g7 = 7 - r.grade; return 'That’s ' + g7 + ' grade' + (g7 > 1 ? 's' : '') + ' below what many sixth forms ask for to study A-level Maths.'; }
+    if (r.grade === 4) return 'That’s a standard pass today, but only just. A few dropped marks on the day could take it below.';
+    var gap = 4 - r.grade;
+    return 'That’s ' + gap + ' grade' + (gap > 1 ? 's' : '') + ' below a standard pass today.';
+  }
+
+  /* ---------------- results ---------------- */
+  /* ---------------- TESTING: skip the questions with a preset student ---------------- */
+  function testRun(grade, y) {
+    year = y; details = { name: 'Alex', target: grade + 2 }; engine = GC.create(y); qn = 0;
+    function O(score, kind, extra) { var o = { score: score, kind: kind, time: kind === 'fast' ? 4 : 22, firstTry: 'direct', given: '(test)' }; for (var k in extra) o[k] = extra[k]; o.firstTime = o.firstTime == null ? o.time : o.firstTime; return o; }
+    var outcome = grade === 3
+      ? function (it) {                       // solid number skills (one slow), fine at grade 2–3, struggles from 3–4 up
+          if (it.level === 0) return it.id === 'n4' ? O(0.8, 'slow', { time: 14 }) : O(1, 'fast');
+          if (it.level === 3) return O(1, 'fast');
+          return O(0.4, 'guided', { firstTry: 'wrong', firstTime: 25, probe: it.level === 4 ? 'forgot' : 'notTaught' });
+        }
+      : function (it) {                       // quick slip on 7 × 8, solid to grade 6–7, stuck above that
+          if (it.id === 'n2') return O(0.5, 'guided', { firstTry: 'wrong', firstTime: 3, given: '54', mistake: 'That’s 6 × 9. 7 × 8 is one of the most commonly mixed-up times tables.' });
+          if (it.level <= 6) return O(1, 'fast');
+          return O(0, 'miss', { probe: it.level === 7 ? 'stuck' : 'forgot', given: 'I don’t know' });
+        };
+    var it;
+    while ((it = engine.next())) { engine.record(it, outcome(it)); qn++; }
+    engine.state.year = y;
+    results();
+  }
+
+  /* ---------------- end of test: a few questions for the parent ---------------- */
+  var details = { name: '', target: null };
+  function askDetails() {
+    visit.questions = qn; track('5. Finished the questions');
+    clearTimers();
+    setBar(100);
+    var node = el('<div class="shell stage"><section class="card">' +
+      '<span class="eyebrow">That’s the last question</span>' +
+      '<h2 style="margin-top:.4rem">A few quick questions for you, then the results</h2>' +
+      '<p class="tier">These are for the parent to answer.</p>' +
+      '<div class="field"><label for="d-name">Your child’s first name</label><input id="d-name" class="text-in" type="text" maxlength="30" autocomplete="off" placeholder="First name"></div>' +
+      '<div class="field"><label>Which year are they in?</label><div class="years" id="d-years" role="group" aria-label="School year">' +
+        ['9', '10', '11'].map(function (y) { return '<button type="button" id="yr-' + y + '" data-y="' + y + '" aria-pressed="false">Year ' + y + '</button>'; }).join('') +
+        '<button type="button" id="yr-resit" data-y="resit" aria-pressed="false">Resitting</button>' +
+      '</div></div>' +
+      '<div class="field"><label>What grade are they aiming for?</label><div class="years" id="d-targets" role="group" aria-label="Target grade">' +
+        [4, 5, 6, 7, 8, 9].map(function (g) { return '<button type="button" id="tg-' + g + '" data-g="' + g + '" aria-pressed="false">Grade ' + g + '</button>'; }).join('') +
+        '<button type="button" id="tg-unsure" data-g="" aria-pressed="false">Not sure yet</button>' +
+      '</div></div>' +
+      '<div class="start-row"><button class="btn" id="seeBtn" type="button" disabled>See the results</button></div>' +
+      '</section></div>');
+    var see = node.querySelector('#seeBtn'), picked = { year: false, target: false };
+    function group(sel, fn) {
+      node.querySelectorAll(sel + ' button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          node.querySelectorAll(sel + ' button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+          fn(b); see.disabled = !(picked.year && picked.target);
+        });
+      });
+    }
+    group('#d-years', function (b) { year = b.getAttribute('data-y'); picked.year = true; });
+    group('#d-targets', function (b) { var g = b.getAttribute('data-g'); details.target = g ? Number(g) : null; picked.target = true; });
+    see.addEventListener('click', function () {
+      details.name = node.querySelector('#d-name').value.trim();
+      engine.state.year = year;
+      results();
+    });
+    show(node);
+    node.querySelector('#d-name').focus();
+  }
+
+  function results() {
+    clearTimers();
+    setBar(100);
+    var r = engine.result();
+    var gradeLine = r.perfect
+      ? 'If they sat GCSE Maths today, we’d expect a grade 9.'
+      : 'If they sat GCSE Maths today, we’d expect at least a grade ' + r.grade + '.';
+    var node = el('<div>' +
+      '<section class="result-hero"><div class="shell">' +
+        '<span class="eyebrow">Your grade check result</span>' +
+        '<div class="grade-row">' +
+          '<div class="grade-badge" aria-label="Estimated grade ' + r.grade + '"><span class="g">' + r.grade + '</span><span class="gl">Grade today</span></div>' +
+          '<div class="grade-copy"><h1>' + gradeLine + '</h1>' +
+            '<span class="range-pill">' + (r.perfect ? 'Every answer right, first time' : 'Somewhere between a grade ' + r.lo + ' and a ' + r.hi) + '</span>' +
+            '<p>This is based on what they can do today, without a calculator or time to revise. It’s an indication, not an exam score. The way to confirm it is a full past paper, marked against the official mark scheme.</p>' +
+          '</div>' +
+        '</div>' +
+      '</div></section>' +
+      '<div class="shell result-body">' +
+        '<section class="card"><span class="eyebrow">Where that sits</span><h2 style="margin-top:.4rem">' + scaleCopy(r) + '</h2>' + gradeScale(r) + '</section>' +
+        '<section class="card"><span class="eyebrow">What’s holding them back</span><h2 style="margin-top:.4rem">From your answers, it seems like you…</h2>' +
+          '<ul class="labels">' + r.labels.map(function (k) { return '<li>' + esc(GC.LABELS[k]) + (r.evidence[k] ? '<span class="evidence">' + esc(r.evidence[k]) + '</span>' : '') + '</li>'; }).join('') + '</ul>' +
+        '</section>' +
+        '<div id="rm-host"></div>' +
+        '<section class="card"><span class="eyebrow">Higher or Foundation</span><h2 style="margin-top:.4rem">Which paper is likely the right choice for you?</h2>' +
+          '<p class="paper-pick">' + esc(r.tier.tier) + '</p>' +
+          '<p class="tier">' + esc(r.tier.why) + '</p></section>' +
+        (SHOW_STAFF ? staffLog(r) : '') +
+        '<div><button class="btn btn--cyan" type="button" id="againBtn">Start again</button></div>' +
+      '</div></div>');
+    node.querySelector('#againBtn').addEventListener('click', intro);
+    lastResult = r;
+    track('6. Saw results', { year: year === 'resit' ? 'Resitting' : year ? 'Year ' + year : '', grade: r.grade, target: details.target || '' });
+    mountRoadmapStep(node.querySelector('#rm-host'), r);
+    resultsNode = node;
+    show(node);
+  }
+
+  /* Staff-only: open the page with #staff on the end of the link to see this. */
+  function staffLog(r) {
+    var KIND = { fast: 'Correct, quick', slow: 'Correct, slower', half: 'Nearly (one step off)', guided: 'With help', partial: 'Partly, with help', miss: 'Not yet' };
+    var FIRST = { direct: '', wrong: 'Wrong first, then steps', idk: 'Said “I don’t know”, then steps', time: 'Ran out of time, then steps', partial: 'Half right, then last step' };
+    var STATUS = { secure: 'Secure', patchy: 'Patchy', gap: 'Gap', untested: 'Not reached' };
+    var PROBE_TXT = {}; GC.PROBES.forEach(function (p) { PROBE_TXT[p.id] = p.text; });
+    return '<section class="card staff"><span class="eyebrow">Staff view · not shown to parents</span>' +
+      '<p class="sample-note" style="margin-top:.4rem">Raw score ' + r.raw.toFixed(2) + ' · highest secure level ' + (r.secure || 'none') + ' · number skills base ' + r.numberBase + ' · labels: ' + r.labels.join(', ') + (r.log.some(function (e) { return e.away; }) ? ' · <strong style="color:var(--gap)">left the page during ' + r.log.filter(function (e) { return e.away; }).length + ' question(s): treat with caution</strong>' : '') + '</p>' +
+      '<p class="sample-note">Topics: ' + r.topics.filter(function (t) { return t.status !== 'untested'; }).map(function (t) { return t.topic + ' ' + STATUS[t.status]; }).join(' · ') + '</p>' +
+      '<div class="logwrap"><table class="logtable"><thead><tr><th>#</th><th>Question</th><th>Their answer</th><th>Result</th><th>First try</th><th>Time</th><th>Left page</th><th>What got in the way</th></tr></thead><tbody>' +
+      r.log.map(function (e, i) {
+        var it = GC.ITEMS.filter(function (x) { return x.id === e.id; })[0];
+        return '<tr><td>' + (i + 1) + '</td><td>' + it.prompt.replace(/<(?!\/?(span|sup)\b)[^>]+>/g, '') + '</td><td>' + esc(e.given || '') + (e.mistake ? '<br><em style="color:var(--warn)">' + esc(e.mistake) + '</em>' : '') + '</td><td>' + KIND[e.kind] + '</td><td>' + (FIRST[e.firstTry] || '') + (e.firstTry !== 'direct' ? ' (' + Math.round(e.firstTime) + 's)' : '') + '</td><td>' + Math.round(e.time) + 's</td><td>' + (e.away ? '<strong style="color:var(--gap)">' + e.away + 's away</strong>' : '') + '</td><td>' + (e.probe ? esc(PROBE_TXT[e.probe]) : '') + '</td></tr>';
+      }).join('') +
+      '</tbody></table></div></section>';
+  }
+
+
+  /* ==================== ROADMAP: goal questions + roadmap page ==================== */
+  var ENROL_URL = 'https://www.mathstutorsonline.uk/roadmap-onboarding';
+  var CALL_URL = 'https://api.leadconnectorhq.com/widget/bookings/gcse-maths-strategy-call-grade-check';
+  /* The booking calendar fills in its standard contact fields from the link. Its custom questions
+     can't be filled this way (tested), so those come through Airtable instead. */
+  function callLinkFor(c) {
+    var parts = c.parentName.trim().split(/\s+/), first = parts.shift() || '', last = parts.join(' ');
+    // UK numbers go across in +44 form so the booking form can't read them as another country's.
+    var digits = c.phone.replace(/[^\d+]/g, ''), phone = /^0\d{10}$/.test(digits) ? '+44' + digits.slice(1) : digits;
+    var q = [['first_name', first], ['last_name', last], ['email', c.email], ['phone', phone]]
+      .filter(function (x) { return x[1]; }).map(function (x) { return x[0] + '=' + encodeURIComponent(x[1]); }).join('&');
+    return CALL_URL + (q ? '?' + q : '');
+  }
+  /* ==================== LEAD CAPTURE → Airtable ====================
+     LEAD_WEBHOOK_URL is the "When webhook received" URL of the Airtable automation that
+     creates/updates the lead in MT.O CRM → Leads. Leave '' to turn sending off. */
+  var LEAD_WEBHOOK_URL = 'https://hooks.airtable.com/workflows/v1/genericWebhook/appBt9tJUbqGrTsXP/wfluVLzzjCbIszGZu/wtr8kkOrL0ntWC2BQ';
+  var lastResult = null;
+
+  /* Year 11 / resit: no roadmap is shown, so work out for the sales call how many sessions a week
+     the target would need, and the highest grade reachable at each frequency. Resits are treated
+     like Year 11 (exam this coming summer). */
+  function feasibilitySummary(r) {
+    var start = RM.nextStart(new Date()), cur = r.grade, t = details.target, examYear = null;
+    // Fewest sessions a week (1–7) that complete the full course for grade g in time, or null.
+    function minSessions(g) {
+      for (var n = 1; n <= 7; n++) {
+        var o = RM.build({ schoolYear: 11, current: cur, target: g, sessions: n, start: start });
+        examYear = o.examYear;
+        if (o.feasible) return { n: n, end: o.end };
+      }
+      return null;
+    }
+    var parts = [], targetImpossible = false;
+    if (t && t > cur) {
+      var m = minSessions(t);
+      targetImpossible = !m;
+      parts.push('Target grade ' + t + ': ' + (m ? 'needs ' + m.n + ' session' + (m.n > 1 ? 's' : '') + '/week (full course done by ' + dMonth(m.end) + ')' : 'not possible before the exams, even at 7 sessions/week'));
+    }
+    var others = [];
+    // Higher grades only ever need more time, so list grades until the first one that isn't
+    // possible and show it as "grade X+ → not possible".
+    for (var g = cur + 1; g <= 9; g++) {
+      if (g === t) continue;
+      if (targetImpossible && g > t) break;          // already covered by the target line
+      var x = minSessions(g);
+      if (!x) { others.push('grade ' + g + (g < 9 ? '+' : '') + ' → not possible'); break; }
+      others.push('grade ' + g + ' → ' + x.n + '/wk');
+    }
+    if (others.length) parts.push((t && t > cur ? 'Other grades' : 'Minimum sessions per grade') + ' (starting w/c ' + dLong(start) + ', ready for the May ' + examYear + ' exams): ' + others.join(', '));
+    return 'Not built (' + (year === 'resit' ? 'resit' : 'Year 11') + ', grade ' + cur + ' today). ' + parts.join('. ') + '.';
+  }
+
+  function contactFieldsHtml(p, heading, note) {
+    return '<div class="contact"><p class="contact-h">' + heading + '</p>' +
+      (note ? '<p class="contact-note">' + note + '</p>' : '') +
+      '<div class="contact-grid">' +
+        '<div class="field"><label for="' + p + '-pname">Your full name</label><input id="' + p + '-pname" class="text-in" type="text" autocomplete="name" maxlength="60"></div>' +
+        '<div class="field"><label for="' + p + '-email">Email</label><input id="' + p + '-email" class="text-in" type="email" autocomplete="email" maxlength="80"></div>' +
+        '<div class="field"><label for="' + p + '-phone">Mobile number' + (p === 'rm' ? ' <span class="opt">(optional)</span>' : '') + '</label><input id="' + p + '-phone" class="text-in" type="tel" autocomplete="tel" maxlength="20"></div>' +
+      '</div>' +
+      '<p class="privacy">We only use your details to follow up about ' + (details.name ? esc(poss(details.name)) : 'your child’s') + ' maths. No spam, and you can ask us to delete them at any time.</p>' +
+      '<p class="contact-err" aria-live="polite"></p></div>';
+  }
+  function readContact(node, p) {
+    var c = { parentName: node.querySelector('#' + p + '-pname').value.trim(), email: node.querySelector('#' + p + '-email').value.trim(),
+              phone: node.querySelector('#' + p + '-phone').value.trim(), whatsapp: !!(node.querySelector('#' + p + '-wa') || {}).checked };
+    // The mobile number is optional when building a roadmap (they can enrol online), required when booking a call.
+    var digits = c.phone.replace(/\D/g, '').length;
+    c.phoneOptional = p === 'rm';
+    c.phoneOk = digits >= 10 || (c.phoneOptional && digits === 0);
+    c.ok = c.parentName.length > 1 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email) && c.phoneOk;
+    return c;
+  }
+  function contactMissing(c) {
+    if (c.parentName.length < 2) return 'Please add your name.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email)) return 'Please check your email address.';
+    return c.phoneOptional ? 'Please check your mobile number, or leave it blank.' : 'Please add a mobile number we can reach you on.';
+  }
+
+  /* Sends everything we know to Airtable. Fire-and-forget: the page never waits on it. */
+  function sendLead(contact, extra) {
+    var r = lastResult;
+    var payload = {
+      source: 'Grade Check', submittedAt: new Date().toISOString(), nextStep: extra.nextStep,
+      parentName: contact.parentName, email: contact.email, phone: contact.phone, whatsapp: contact.whatsapp,
+      studentName: details.name || extra.studentName || '', schoolYear: year === 'resit' ? 'Resitting' : 'Year ' + year,
+      currentGrade: r.grade, gradeRange: r.lo + '-' + r.hi, targetGrade: extra.target || details.target || null,
+      examTier: /^Higher/.test(r.tier.tier) ? 'Higher' : /^Foundation/.test(r.tier.tier) ? 'Foundation' : '',
+      tierAdvice: r.tier.tier,
+      labels: r.labels.map(function (k) { return GC.LABELS[k] + (r.evidence[k] ? ' (' + r.evidence[k] + ')' : ''); }).join('\n'),
+      roadmap: extra.roadmap || '',
+      emailSubject: extra.emailSubject || '', emailBody: extra.emailBody || '',
+      questionLog: r.log.map(function (e, i) {
+        return (i + 1) + '. ' + GC.ITEMS.filter(function (x) { return x.id === e.id; })[0].name + ': ' + (e.given || '') + ' → ' + e.kind +
+          ' (' + Math.round(e.time) + 's' + (e.probe ? ', ' + e.probe : '') + (e.away ? ', left page ' + e.away + 's' : '') + ')';
+      }).join('\n')
+    };
+    if (!LEAD_WEBHOOK_URL) { try { console.log('[grade-check] lead (not sent, no webhook set)', payload); } catch (err) {} return; }
+    // Airtable's webhook doesn't allow browsers to send JSON, but it does accept a plain form post,
+    // so each value goes as a form field.
+    try {
+      var form = new URLSearchParams();
+      Object.keys(payload).forEach(function (k) { var v = payload[k]; if (v !== null && v !== undefined && v !== '') form.append(k, String(v)); });
+      fetch(LEAD_WEBHOOK_URL, { method: 'POST', mode: 'no-cors', keepalive: true,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }, body: form.toString() }).catch(function () {});
+    } catch (err) {}
+  }
+
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var MODE = { test_and_learn: 'Test & Learn', learn: 'Learn', recap_and_test: 'Recap & Test' };
+  var resultsNode = null;
+  function dShort(d) { return d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()]; }
+  function dLong(d) { return dShort(d) + ' ' + d.getUTCFullYear(); }
+  function dMonth(d) { return MONTHS[d.getUTCMonth()] + ' ' + d.getUTCFullYear(); }
+  function poss(n) { return /s$/i.test(n) ? n + '’' : n + '’s'; }
+  function tierText(plan) {
+    return plan.map(function (p) { return (p[0] === 'higher' ? 'Higher' : 'Foundation') + (p[1] > 1 ? ' (×' + p[1] + ')' : ''); }).join(', then ');
+  }
+
+  /* ==================== RESULTS EMAIL ====================
+     Plain text, so it reads well in any inbox and in the Gmail step of the Airtable automation.
+     The roadmap link reopens this page straight on the roadmap (see openRoadmapFromLink). */
+  var PAGE_URL = 'https://gradecheck.mathstutors.online/';   // set to the live address once hosted, e.g. https://gradecheck.mathstutors.online/
+  function pageUrl() { return PAGE_URL || (location.origin + location.pathname); }
+  function roadmapLink(name, grade, target, n, start) {
+    var q = new URLSearchParams({ y: String(year), g: String(grade), t: String(target), n: String(n), s: RM.iso(start), name: name });
+    return pageUrl() + '?utm_source=roadmap-email#roadmap?' + q.toString();
+  }
+  function firstName(full) { return String(full || '').trim().split(/\s+/)[0] || 'there'; }
+  // Emails use the same markdown style as MT.O's other Airtable emails: # / ## headings with an
+  // emoji, **bold**, _italics_, [links](url), <br> for line breaks and simple tables.
+  // The result labels, written about the child for the email ("From your answers, it seems like Ellis:").
+  var LABELS_3P = {
+    foundations: 'Is struggling because of a few gaps in their foundational maths skills. Once the basics are nailed down, everything else gets easier.',
+    arithmetic: 'Spends so long on the arithmetic that they run out of time to even look at the harder questions.',
+    careless: 'Knows how to do the basics, but makes quick slips with times tables and arithmetic. Making these automatic will stop careless errors costing them marks under exam pressure.',
+    forgot: 'Recognises what they’re looking at but just can’t remember how to solve it. They need more guided practice, and methods that stay in their brain for next time.',
+    behind: 'Is a little behind from missing some of the content, and needs to patch up the gaps to feel confident in tests and exams.',
+    wording: 'Doesn’t always know what a question is asking, so it’s hard to know where to start.',
+    stuck: 'Can do the maths just fine, but doesn’t know where to start or gets lost part-way through a question.',
+    breakdown: 'Is fine when a question is split into parts a, b, c and d, but finds it hard to break a bigger, worded question into those steps themselves.',
+    problemSolving: 'Doesn’t have one topic they really struggle with, but needs more support as the questions move into higher-level problem solving.',
+    confidence: 'Has lost some confidence in their maths over the past few years as the content has got a little harder.',
+    examTechnique: 'Is fine in class but finds tests harder. They’re missing the exam technique to spot what a question is about, and what the first step should be.',
+    strong: 'Has a strong foundation right across the course. The next step is exam technique and the hardest problem-solving questions to lock in an 8 or a 9.'
+  };
+  var FOUNDATION_CAP_NOTE = 'Although the highest grade you can achieve on the Foundation paper is a 5, this is currently the right choice based on your starting point and the time available before the exam. If you _need_ to push for the Higher paper, please reply to this email and we’ll talk through what that would look like, so you get the grade you’re looking for.';
+  // plan: the roadmap's course plan (Years 9/10), or null when there's no roadmap (Year 11 / resit).
+  function resultsMd(r, child, plan) {
+    var foundation = /^Foundation/.test(r.tier.tier), goesHigher = plan && plan.some(function (p) { return p[0] === 'higher'; });
+    var why = r.tier.why.replace('while Higher covers grades 4 to 9', 'while Higher goes up to 9').replace('if they reach a solid 5', 'when we reach a solid 5');
+    var paper = '**Which paper is likely the right choice:** ' + r.tier.tier + '<br>_' + why + '_';
+    if (foundation && details.target > 5 && !goesHigher) paper = '**Which paper is likely the right choice:** ' + r.tier.tier + '<br>' + FOUNDATION_CAP_NOTE;
+    var out = ['## 📊 ' + poss(child) + ' results',
+      '**Current grade:** ' + r.grade,
+      details.target ? '**Target grade:** ' + details.target : null,
+      paper];
+    if (r.labels.length) {
+      out.push('## 🧩 What’s holding ' + child + ' back', 'From your answers, it seems like ' + child + ':',
+        r.labels.map(function (k) { return '- ' + (LABELS_3P[k] || GC.LABELS[k]) + (r.evidence[k] ? '<br>_' + r.evidence[k] + '_' : ''); }).join('\n'));
+    }
+    return out.filter(function (x) { return x !== null; });
+  }
+  var SIGN_OFF = 'Kind regards,<br>The Student Success Team<br>[MathsTutors.Online](https://mathstutors.online)';
+  function emailRoadmap(c, r, name, target, n, start, o) {
+    var body = [
+      'Hi ' + firstName(c.parentName) + ', thanks for doing the MT.O grade check with ' + name + '!<br>Here’s a copy of the results and ' + poss(name) + ' roadmap, so you can come back to it any time, and below that are more details about getting ' + name + ' enrolled with MT.O to turn that target grade into reality!'
+    ].concat(resultsMd(r, name, o.plan), [
+      '## 🗺️ ' + poss(name) + ' roadmap',
+      'What’s needed to go from a grade ' + r.grade + ' today to a grade ' + target + ', in time for the **May ' + o.examYear + '** exams:',
+      ['- **Sessions:** ' + n + ' x 1hr per week',
+       '- **Course:** ' + tierText(o.plan),
+       '- **Starts:** w/c ' + dLong(o.rows[0].monday),
+       '- **Exam ready by:** ' + dMonth(o.end)].join('\n'),
+      '**[See ' + poss(name) + ' full week-by-week roadmap](' + roadmapLink(name, r.grade, target, n, start) + ')**',
+      '## 📆 The first 6 weeks',
+      '[Here’s a video](' + ENROL_URL + ') explaining exactly how our sessions work and how we get 7x the national average result!',
+      '## ✅ Ready to start?',
+      'Watch the short video to see exactly how the sessions work, then pick a time that suits you: **[Start the first 6 weeks](' + ENROL_URL + ')**',
+      'If you’ve still got questions about how things work, feel free to reply to this email.',
+      SIGN_OFF
+    ]).join('\n\n');
+    return { emailSubject: poss(name) + ' GCSE Maths Roadmap & How To Access 🚀', emailBody: body };
+  }
+  function emailCall(c, r) {
+    var name = details.name || 'your child', t = details.target, need = '';
+    if (t && t > r.grade) {
+      var start = RM.nextStart(new Date()), m = null;
+      for (var k = 1; k <= 7 && !m; k++) { var o = RM.build({ schoolYear: 11, current: r.grade, target: t, sessions: k, start: start }); if (o.feasible) m = { n: k, ex: o.examYear }; }
+      need = m ? 'To get from a grade ' + r.grade + ' to a grade ' + t + ' in time for the **May ' + m.ex + '** exams, ' + name + ' would need around **' + m.n + ' session' + (m.n > 1 ? 's' : '') + ' a week**. On the call we’ll go through what that looks like and what to focus on first.'
+               : 'A jump from a grade ' + r.grade + ' to a grade ' + t + ' is a big one with the time left before the exams, so on the call we’ll agree a realistic target and the quickest route to it.';
+    }
+    var body = [
+      'Hi ' + firstName(c.parentName) + ', thanks for doing the MT.O grade check' + (details.name ? ' with ' + details.name : '') + '! Here’s a copy of the results, so you have them for the call.'
+    ].concat(resultsMd(r, details.name || 'your child', null), [
+      '## 📞 Your strategy call',
+      need || (r.perfect || r.grade >= 9
+        ? 'Every answer right, first time and quickly, so ' + name + ' is already at a grade 9 today. On the call we’ll plan how to push for full marks: exam technique, the hardest problem-solving questions and full papers under exam conditions.'
+        : 'On the call we’ll go through these results, agree a realistic target and map out exactly what to cover in the time that’s left.'),
+      'If you haven’t picked a time yet: **[Book your call](' + callLinkFor(c) + ')**',
+      'If you’ve still got questions about how things work, feel free to reply to this email.',
+      SIGN_OFF
+    ]).join('\n\n');
+    return { emailSubject: (details.name ? poss(details.name) + ' ' : 'Your ') + 'GCSE Maths Results 📊', emailBody: body };
+  }
+
+  function mountRoadmapStep(host, r) {
+    var topGrade = r.perfect || r.grade >= 9;
+    if (year === '11' || year === 'resit' || topGrade) {
+      var whoP = details.name ? esc(poss(details.name)) : 'their';
+      host.innerHTML = '<section class="card rm-first"><span class="eyebrow">Your next step</span>' +
+        (topGrade
+          ? '<h2 style="margin-top:.4rem">Book a call to plan how ' + (details.name ? esc(details.name) : 'they') + ' lock' + (details.name ? 's' : '') + ' in the grade 9</h2>' +
+            '<p class="tier">They’re already at the top grade today, so a standard roadmap isn’t the right fit. From here it’s about full marks: exam technique, the hardest problem-solving questions and full papers under exam conditions. We plan that with you on a short call, around ' + whoP + ' exam date and the time available.</p>'
+          : '<h2 style="margin-top:.4rem">Book a call to plan ' + whoP + ' route' + (details.target && details.target > r.grade ? ' to a grade ' + details.target : '') + '</h2>' +
+            '<p class="tier">With the exam this summer, there isn’t time to cover the full course at one or two sessions a week. So for ' + (year === 'resit' ? 'resits' : 'Year 11') + ', we plan it with you on a short call: we go through these results, agree a realistic target, and map out exactly what to cover in the time that’s left.</p>') +
+        contactFieldsHtml('cl', 'Where should we send the results?', 'We’ll email you a copy of these results and the booking link, so you have them for the call.') +
+        '<div class="start-row"><a class="btn btn--cyan" id="cl-book" href="' + CALL_URL + '" target="_blank" rel="noopener">Book your call</a></div></section>';
+      var card = host.firstChild, sent = false;
+      card.querySelector('#cl-book').addEventListener('click', function (e) {
+        var c = readContact(card, 'cl');
+        if (!c.ok) { e.preventDefault(); card.querySelector('.contact-err').textContent = contactMissing(c); return; }
+        card.querySelector('.contact-err').textContent = '';
+        this.href = callLinkFor(c);
+        if (!sent) {
+          var em = emailCall(c, r);
+          sendLead(c, { nextStep: topGrade ? 'Booked call (grade 9)' : 'Booked call (Year 11 / resit)',
+            roadmap: topGrade ? 'Not built (grade 9 today, every answer right first time and quickly). Call to plan full marks.' : feasibilitySummary(r),
+            emailSubject: em.emailSubject, emailBody: em.emailBody });
+          sent = true;
+        }
+        track('9. Clicked book a call', { email: c.email }); flushVisit(true);
+      });
+      return;
+    }
+    var start = RM.nextStart(new Date()), state = { name: '', target: null, sessions: null };
+    var targets = []; for (var g = r.grade + 1; g <= 9; g++) targets.push(g);
+    var who0 = details.name ? esc(details.name) : 'them';
+    var node = el('<section class="card rm-builder rm-first"><span class="eyebrow">Your next step</span>' +
+      '<h2 style="margin-top:.4rem">See exactly what it takes to get ' + who0 + ' to the grade they want</h2>' +
+      '<p class="tier">Get a step-by-step plan from a grade ' + r.grade + ' today to their target grade, and see straight away whether it’s realistic in the time left before the exams.</p>' +
+      '<div class="field"><label for="rm-name">Child’s first name</label><input id="rm-name" class="text-in" type="text" maxlength="30" autocomplete="off" placeholder="First name"></div>' +
+      '<div class="field"><label>What grade are they aiming for?</label><div class="years" id="rm-targets" role="group" aria-label="Target grade">' +
+        targets.map(function (t) { return '<button type="button" id="rm-t' + t + '" data-t="' + t + '" aria-pressed="false">Grade ' + t + '</button>'; }).join('') +
+      '</div></div>' +
+      '<div id="rm-options"></div>' +
+      contactFieldsHtml('rm', 'Where should we send the roadmap?', 'We’ll email you a copy of the results and the full roadmap, so you can come back to it any time.') +
+      '<div class="start-row"><button class="btn" id="rm-build" type="button" disabled>Build the roadmap</button></div>' +
+      '</section>');
+    var nameIn = node.querySelector('#rm-name'), opts = node.querySelector('#rm-options'), buildBtn = node.querySelector('#rm-build');
+    function ready() { buildBtn.disabled = !(state.name && state.target && state.sessions); }
+    nameIn.addEventListener('input', function () { state.name = nameIn.value.trim(); ready(); });
+    function pickTarget(t) {
+      state.target = t; state.sessions = null;
+      node.querySelectorAll('#rm-targets button').forEach(function (b) { b.setAttribute('aria-pressed', String(Number(b.getAttribute('data-t')) === t)); });
+      var res = [1, 2].map(function (n) { return RM.build({ schoolYear: Number(year), current: r.grade, target: t, sessions: n, start: start }); });
+      var html = '<div class="field"><label>How many sessions a week?</label><div class="rm-opts">';
+      res.forEach(function (o, i) {
+        var n = i + 1;
+        html += '<button type="button" class="rm-opt" id="rm-s' + n + '" data-n="' + n + '" aria-pressed="false"' + (o.feasible ? '' : ' disabled') + '>' +
+          '<span class="rm-opt-t">' + n + ' session' + (n > 1 ? 's' : '') + ' a week</span>' +
+          (o.feasible
+            ? '<span class="rm-opt-s ok">✓ Full course done by ' + dMonth(o.end) + ', ready for the May ' + o.examYear + ' exams</span>'
+            : '<span class="rm-opt-s no">Not enough time to reach a grade ' + t + ' before the May ' + o.examYear + ' exams</span>') +
+          '</button>';
+      });
+      html += '</div></div>';
+      if (!res[0].feasible && !res[1].feasible) {
+        var best = RM.maxFeasibleGrade({ schoolYear: Number(year), current: r.grade, target: t, sessions: 2, start: start });
+        html += '<p class="rm-note">' + (best
+          ? 'Reaching a grade ' + t + ' before the exams needs more than 2 sessions a week. At 2 sessions a week, a grade ' + best + ' is within reach. <button type="button" class="linkbtn" id="rm-best">Aim for a grade ' + best + ' instead</button>'
+          : 'Even one grade up needs more time than 2 sessions a week allows before the exams.') + '</p>';
+      }
+      opts.innerHTML = html;
+      opts.querySelectorAll('.rm-opt').forEach(function (b) {
+        b.addEventListener('click', function () {
+          state.sessions = Number(b.getAttribute('data-n'));
+          opts.querySelectorAll('.rm-opt').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+          ready();
+        });
+      });
+      var bestBtn = opts.querySelector('#rm-best');
+      if (bestBtn) bestBtn.addEventListener('click', function () { pickTarget(best); });
+      var first = opts.querySelector('.rm-opt:not([disabled])');   // pre-select the fewest sessions that work
+      if (first) first.click();
+      ready();
+    }
+    node.querySelectorAll('#rm-targets button').forEach(function (b) { b.addEventListener('click', function () { pickTarget(Number(b.getAttribute('data-t'))); }); });
+    if (details.name) { nameIn.value = details.name; state.name = details.name; }
+    if (details.target && details.target > r.grade) pickTarget(details.target);
+    else if (details.target) opts.innerHTML = '<p class="rm-note">They’re already at a grade ' + r.grade + ' today, so a grade ' + details.target + ' is within reach already. Pick a higher target to see the roadmap.</p>';
+    buildBtn.addEventListener('click', function () {
+      if (!state.name) { nameIn.focus(); return; }
+      var c = readContact(node, 'rm');
+      if (!c.ok) { node.querySelector('.contact-err').textContent = contactMissing(c); return; }
+      node.querySelector('.contact-err').textContent = '';
+      var o = RM.build({ schoolYear: Number(year), current: r.grade, target: state.target, sessions: state.sessions, start: start });
+      details.name = details.name || state.name;
+      track('8. Built roadmap', { email: c.email, target: state.target }); flushVisit();
+      var em = emailRoadmap(c, r, state.name, state.target, state.sessions, start, o);
+      sendLead(c, { nextStep: 'Built roadmap', target: state.target, studentName: state.name, emailSubject: em.emailSubject, emailBody: em.emailBody,
+        roadmap: state.sessions + ' session' + (state.sessions > 1 ? 's' : '') + ' per week, starting w/c ' + dLong(o.rows[0].monday) + ', ' +
+          o.plan.map(function (pl) { return pl[1] + ' x ' + (pl[0] === 'higher' ? 'Higher' : 'Foundation'); }).join(', ') });
+      renderRoadmap(state.name, r, state.target, state.sessions, start);
+    });
+    host.appendChild(node);
+  }
+
+  function rmCell(w, n, i) {
+    var label = n > 1 ? '<span class="rm-sl">Session ' + (i + 1) + '</span>' : '';
+    if (!w) return '<div class="rm-cell empty">' + label + '<span class="rm-none">No session</span></div>';
+    if (w.isBreak) return '<div class="rm-cell brk">' + label + '<span>Holiday break</span></div>';
+    var t = CURRICULUM[w.tier][w.topic];
+    var sub = w.weekInTopic < RM.WEEKS_PER_TOPIC ? t.s[w.weekInTopic - 1] : 'All five ' + t.n + ' subtopics';
+    return '<div class="rm-cell" style="--tc:' + t.c + '">' + label +
+      '<span class="rm-pill ' + w.mode + '">' + MODE[w.mode] + '</span>' +
+      '<span class="rm-topic">' + esc(t.n) + '</span><span class="rm-sub">' + esc(sub) + '</span></div>';
+  }
+  function rmRows(rows, n) {
+    return rows.map(function (row) {
+      var cells = ''; for (var i = 0; i < n; i++) cells += rmCell(row.cells[i], n, i);
+      return '<div class="rm-row" style="--n:' + n + '"><div class="rm-wk"><b>Week ' + row.week + '</b><span>' + dShort(row.monday) + ' – ' + dShort(RM.add(row.monday, 6)) + '</span></div>' + cells + '</div>';
+    }).join('');
+  }
+  function rmHead(n) {
+    var h = '<div class="rm-row rm-head" style="--n:' + n + '"><div>Week</div>';
+    for (var i = 0; i < n; i++) h += '<div>' + (n > 1 ? 'Session ' + (i + 1) : 'Weekly session') + '</div>';
+    return h + '</div>';
+  }
+
+  function renderRoadmap(name, r, target, n, start) {
+    var o = RM.build({ schoolYear: Number(year), current: r.grade, target: target, sessions: n, start: start });
+    var who = esc(name), whoS = esc(poss(name));
+    var tiers = o.plan.map(function (p) { return p[0]; });
+    var tracker = tiers.map(function (tier) {
+      return (tiers.length > 1 ? '<p class="rm-tier">' + (tier === 'higher' ? 'Higher' : 'Foundation') + '</p>' : '') +
+        '<div class="rm-topics">' + CURRICULUM[tier].map(function (t) { return '<span style="--tc:' + t.c + '">' + esc(t.n) + '</span>'; }).join('') + '</div>';
+    }).join('');
+    var first6 = o.rows.slice(0, 6);
+    var node = el('<div>' +
+      '<section class="result-hero"><div class="shell">' +
+        '<span class="eyebrow">Your MT.O roadmap</span>' +
+        '<h1 class="rm-title">' + whoS + ' GCSE Maths Roadmap</h1>' +
+        '<p class="rm-lede">From a grade ' + r.grade + ' today to a grade ' + target + ', in time for the May ' + o.examYear + ' exams.</p>' +
+        '<ul class="rm-stats">' +
+          '<li><b>' + n + '</b> session' + (n > 1 ? 's' : '') + ' a week</li>' +
+          '<li><b>' + tierText(o.plan) + '</b></li>' +
+          '<li>Starts <b>w/c ' + dLong(o.rows[0].monday) + '</b></li>' +
+          '<li>Full course done by <b>' + dMonth(o.end) + '</b></li>' +
+        '</ul>' +
+      '</div></section>' +
+      '<div class="shell result-body">' +
+        '<section class="card rm-first"><span class="eyebrow">Where ' + who + ' would start</span><h2 style="margin-top:.4rem">The first 6 weeks</h2>' +
+          '<p class="tier">This is the first block of the roadmap. Each weekly session works through one topic, taught live by an MT.O tutor, and ' + who + ' is assessed at the start and end so you can see the progress for yourself.</p>' +
+          '<div class="rm-table">' + rmHead(n) + rmRows(first6, n) + '</div>' +
+          '<div class="start-row"><a class="btn btn--cyan" href="' + ENROL_URL + '" target="_blank" rel="noopener">Start the first 6 weeks</a><span class="small">Watch the short video and enrol on the next page.</span></div>' +
+        '</section>' +
+        '<section class="card"><span class="eyebrow">How the roadmap works</span><h2 style="margin-top:.4rem">Six weeks per topic, in a set order</h2>' +
+          '<ul class="rm-legend"><li><span class="rm-pill test_and_learn">Test & Learn</span>Week 1: a short test to see what they already know, then the first lesson</li>' +
+          '<li><span class="rm-pill learn">Learn</span>Weeks 2 to 5: one subtopic a week</li>' +
+          '<li><span class="rm-pill recap_and_test">Recap & Test</span>Week 6: recap the whole topic, then test it</li></ul>' +
+          '<p class="tier">This plan is the amount of tuition MT.O’s average student needs to reach their target grade, because it covers the entire GCSE curriculum. Christmas (2 weeks) and Easter (1 week) are shown as breaks.</p>' +
+          '<h3 class="rm-h3">Topics covered</h3>' + tracker +
+        '</section>' +
+        '<section class="card"><span class="eyebrow">Week by week</span><h2 style="margin-top:.4rem">The full roadmap: ' + o.rows.length + ' weeks</h2>' +
+          '<details class="rm-all"><summary>Show all ' + o.rows.length + ' weeks</summary><div class="rm-table">' + rmHead(n) + rmRows(o.rows, n) + '</div></details>' +
+        '</section>' +
+        '<section class="card rm-cta"><h2>Ready to start ' + whoS + ' first 6 weeks?</h2>' +
+          '<p class="tier">Watch the short video to see exactly how the sessions work, then pick a time that suits you.</p>' +
+          '<div class="start-row"><a class="btn btn--cyan" href="' + ENROL_URL + '" target="_blank" rel="noopener">Start the first 6 weeks</a>' +
+          '<button class="linkbtn" type="button" id="rm-back">Back to the results</button></div>' +
+        '</section>' +
+      '</div></div>');
+    var back = node.querySelector('#rm-back');
+    if (!resultsNode) back.textContent = 'Take the grade check again';
+    back.addEventListener('click', function () { if (resultsNode) show(resultsNode); else { history.replaceState(null, '', location.pathname); intro(); } });
+    show(node);
+  }
+
+  /* ==================== VISIT TRACKING → Airtable "Grade Check Visits" ====================
+     One row per visitor, updated with the furthest step reached. Sent when the visitor leaves
+     or hides the page, and straight away at the key end points, so drop-offs are recorded too.
+     No cookies and nothing personal (the email is only added once they've given it). */
+  var VISIT_WEBHOOK_URL = 'https://hooks.airtable.com/workflows/v1/genericWebhook/appBt9tJUbqGrTsXP/wfl6q2r7pOaOj9AAn/wtrbmf5IuuPjKCvoR';
+  var STEPS = ['1. Landed', '2. Started', '3. Reached question 5', '4. Reached question 10', '5. Finished the questions',
+               '6. Saw results', '7. Started typing their details', '8. Built roadmap', '9. Clicked enrol', '9. Clicked book a call'];
+  var visit = (function () {
+    var q = new URLSearchParams(location.search), src = q.get('utm_source') || q.get('src') || q.get('ref') || '';
+    if (!src) { try { src = document.referrer ? new URL(document.referrer).hostname : 'direct'; } catch (e) { src = 'direct'; } }
+    return { id: 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8), t0: Date.now(), step: 0, sentStep: -1,
+             source: src.slice(0, 80), campaign: (q.get('utm_campaign') || '').slice(0, 80),
+             device: /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'Phone/tablet' : 'Computer',
+             questions: 0, year: '', grade: '', target: '', email: '' };
+  })();
+  function track(stepName, extra) {
+    var i = STEPS.indexOf(stepName);
+    if (i > visit.step) visit.step = i;
+    if (extra) Object.keys(extra).forEach(function (k) { if (extra[k] !== undefined && extra[k] !== null && extra[k] !== '') visit[k] = extra[k]; });
+  }
+  function flushVisit(force) {
+    if (!VISIT_WEBHOOK_URL || (!force && visit.step === visit.sentStep)) return;
+    visit.sentStep = visit.step;
+    var f = new URLSearchParams();
+    f.append('visitId', visit.id); f.append('furthestStep', STEPS[visit.step]); f.append('stepNumber', String(Math.min(visit.step, 8) + 1));
+    f.append('questionsAnswered', String(visit.questions)); f.append('minutes', (Math.round((Date.now() - visit.t0) / 6000) / 10).toFixed(1));
+    f.append('device', visit.device); f.append('source', visit.source);
+    ['campaign', 'year', 'grade', 'target', 'email'].forEach(function (k) { if (visit[k] !== '') f.append(k, String(visit[k])); });
+    var body = f.toString();
+    try {
+      if (navigator.sendBeacon && navigator.sendBeacon(VISIT_WEBHOOK_URL, new Blob([body], { type: 'application/x-www-form-urlencoded' }))) return;
+    } catch (e) {}
+    try { fetch(VISIT_WEBHOOK_URL, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).catch(function () {}); } catch (e) {}
+  }
+  document.addEventListener('visibilitychange', function () { if (document.hidden) flushVisit(); });
+  window.addEventListener('pagehide', function () { flushVisit(); });
+  document.addEventListener('input', function (e) {
+    if (e.target.id && /-(pname|email|phone)$/.test(e.target.id)) track('7. Started typing their details');
+  }, true);
+  // Enrol / book clicks are the end of the journey: record them straight away.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    if (a.href.indexOf(ENROL_URL) === 0) { track('9. Clicked enrol'); flushVisit(); }
+  }, true);
+
+  // Opened from the roadmap link in the results email: show that roadmap straight away.
+  // If the start week in the link has passed, it moves to the next available start.
+  function openRoadmapFromLink() {
+    var h = location.hash.match(/^#roadmap\?(.*)$/);
+    if (!h) return false;
+    var q = new URLSearchParams(h[1]), y = q.get('y'), g = Number(q.get('g')), t = Number(q.get('t')), n = Number(q.get('n')),
+        sm = (q.get('s') || '').match(/^(\d{4})-(\d{2})-(\d{2})$/), name = (q.get('name') || '').slice(0, 40);
+    if (!/^(9|10)$/.test(y) || !(g >= 1 && g <= 9) || !(t > g && t <= 9) || !(n >= 1 && n <= 7) || !name) return false;
+    var start = sm ? RM.D(+sm[1], +sm[2], +sm[3]) : null, next = RM.nextStart(new Date());
+    if (!start || start < next) start = next;
+    year = y; details = { name: name, target: t };
+    try { renderRoadmap(name, { grade: g }, t, n, start); } catch (e) { return false; }
+    return true;
+  }
+  if (!openRoadmapFromLink()) intro();
+})();
+</script>
+</body>
+</html>
